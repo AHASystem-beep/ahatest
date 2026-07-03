@@ -1,6 +1,12 @@
 <!DOCTYPE html>
+<!--
+  AHA Systems © AHA_Accounting — جميع الحقوق محفوظة.
+  يُمنع نسخ أو إعادة نشر هذا الملف دون إذن خطي صريح من صاحب الحقوق.
+  المصدر الرسمي: https://ahasystem-beep.github.io/ahatest/
+-->
 <html lang="ar" dir="rtl">
 <head>
+<script src="aha-protect.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مولّد حالات واتساب وانستا — AHA Systems | AHA_Accounting</title>
@@ -187,6 +193,10 @@
     font-size: 24px; font-weight:600; letter-spacing: 1px; z-index:2; display:flex; align-items:center; gap:10px;
   }
   .story-canvas .story-brand::before{ content:'◆'; font-size:16px; }
+  .story-canvas .photo-credit{
+    position:absolute; bottom:16px; left:16px; font-family:'IBM Plex Mono', monospace;
+    direction: ltr; font-size:15px; color: rgba(255,255,255,0.65); z-index:2;
+  }
   .story-canvas.empty-state .story-quote{
     color: rgba(255,255,255,0.55); font-weight:600; font-size:42px;
   }
@@ -374,6 +384,7 @@
         <div class="story-quote" id="storyQuote">اكتب نصك هنا ليظهر مباشرة في المعاينة</div>
         <div class="story-source" id="storySource"></div>
         <div class="story-brand">AHA_Accounting</div>
+        <div class="photo-credit" id="photoCredit" style="display:none;"></div>
       </div>
     </div>
     <div class="hint-text" style="text-align:center;">معاينة حيّة — الصورة النهائية تُصدَّر بجودة كاملة (1080px)</div>
@@ -440,8 +451,18 @@ const BACKGROUNDS = [
   {id:'bg-17', cats:['general'],                            style:'linear-gradient(135deg,#4E54C8,#8F94FB 55%,#6441A5 100%)'},
   {id:'bg-18', cats:['general'],                            style:'linear-gradient(135deg,#FF512F,#F09819 100%)'},
   {id:'bg-19', cats:['general'],                            style:'linear-gradient(135deg,#F6A6B2,#7F7FD5 100%)'},
-  {id:'bg-20', cats:['general'],                            style:'linear-gradient(135deg,#11998E,#38EF7D 100%)'}
+  {id:'bg-20', cats:['general'],                            style:'linear-gradient(135deg,#11998E,#38EF7D 100%)'},
+  /* خلفيات صور حقيقية — مرخّصة استخدام حر (Creative Commons / علم عام) مع ذكر المصدر */
+  {id:'bg-21', cats:['religious','general'], photo:'https://commons.wikimedia.org/wiki/Special:FilePath/Umayyad%20Mosque%2C%20Damascus.jpg', credit:'الجامع الأموي، دمشق — Bernard Gagnon، CC BY-SA 3.0'},
+  {id:'bg-22', cats:['religious','general'], photo:'https://commons.wikimedia.org/wiki/Special:FilePath/Milky%20Way%20Galaxy.jpg', credit:'سماء مرصّعة بالنجوم — مبني على صور NASA، ملكية عامة'},
+  {id:'bg-23', cats:['general','accounting'], photo:'https://commons.wikimedia.org/wiki/Special:FilePath/Forested%20mountain%20valley%20(Unsplash).jpg', credit:'طبيعة جبلية خضراء — Unsplash، ملكية عامة (CC0)'},
+  {id:'bg-24', cats:['religious','general'], photo:'https://commons.wikimedia.org/wiki/Special:FilePath/Green%20Dome%2C%20Masjid%20Al%20Nabawi.jpg', credit:'القبة الخضراء، المسجد النبوي — ملكية عامة (CC0)'},
+  {id:'bg-25', cats:['religious','general'], photo:'https://commons.wikimedia.org/wiki/Special:FilePath/Al-Kaaba%20in%20Mecca.jpg', credit:'الكعبة المشرّفة، مكة — ملكية عامة (CC0)'}
 ];
+
+/* صار عندك الآن 5 صور حقيقية (أمثلة ملكية عامة): الجامع الأموي، سماء نجوم، طبيعة جبلية،
+   القبة الخضراء بالمسجد النبوي، الكعبة المشرّفة. لإضافة صور أكتر (نفس المبدأ: ملكية عامة/CC0)
+   أضف عنصراً هنا بنفس النمط: {id:'bg-26', cats:['religious'], photo:'رابط أو مسار محلي', credit:'...'} */
 
 const DEFAULT_BG = { religious:'bg-7', accounting:'bg-5', general:'bg-1' };
 
@@ -460,18 +481,17 @@ const bgGrid = document.getElementById('bgGrid');
 function renderBgGrid(){
   bgGrid.innerHTML = '';
   BACKGROUNDS.forEach(bg=>{
-    const allowed = bg.cats.includes(state.cat);
     const div = document.createElement('div');
-    div.className = 'bg-swatch' + (bg.id===state.bg ? ' selected':'') + (allowed ? '' : ' disabled');
-    div.style.background = bg.style;
-    div.title = allowed ? 'اختر هذه الخلفية' : 'غير متاحة لهذه الفئة';
-    const lock = document.createElement('div');
-    lock.className = 'lock-mark';
-    lock.textContent = allowed ? '' : '🔒';
-    div.appendChild(lock);
-    if(allowed){
-      div.addEventListener('click', ()=>{ state.bg = bg.id; renderBgGrid(); renderCanvas(); });
+    div.className = 'bg-swatch' + (bg.id===state.bg ? ' selected':'');
+    if(bg.photo){
+      div.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.35)), url(' + bg.photo + ')';
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'center';
+    } else {
+      div.style.background = bg.style;
     }
+    div.title = bg.credit ? ('صورة: ' + bg.credit) : 'اختر هذه الخلفية';
+    div.addEventListener('click', ()=>{ state.bg = bg.id; renderBgGrid(); renderCanvas(); });
     bgGrid.appendChild(div);
   });
 }
@@ -542,9 +562,27 @@ const storySource = document.getElementById('storySource');
 const canvasViewport = document.getElementById('canvasViewport');
 
 function renderCanvas(){
-  storyCanvas.className = 'story-canvas ' + (state.ratio==='story' ? 'ratio-story':'ratio-post') + ' ' + state.bg;
+  storyCanvas.className = 'story-canvas ' + (state.ratio==='story' ? 'ratio-story':'ratio-post') + ' ' + (BACKGROUNDS.find(b=>b.id===state.bg)&&BACKGROUNDS.find(b=>b.id===state.bg).photo ? '' : state.bg);
   const bgDef = BACKGROUNDS.find(b=>b.id===state.bg);
   storyCanvas.classList.toggle('frame-ornate', !!(bgDef && bgDef.ornate));
+
+  if(bgDef && bgDef.photo){
+    storyCanvas.style.backgroundImage = 'linear-gradient(180deg, rgba(20,15,20,0.35), rgba(20,15,20,0.55)), url(' + bgDef.photo + ')';
+    storyCanvas.style.backgroundSize = 'cover';
+    storyCanvas.style.backgroundPosition = 'center';
+  } else {
+    storyCanvas.style.backgroundImage = '';
+    storyCanvas.style.backgroundSize = '';
+    storyCanvas.style.backgroundPosition = '';
+  }
+
+  const creditEl = document.getElementById('photoCredit');
+  if(bgDef && bgDef.credit){
+    creditEl.textContent = '📷 ' + bgDef.credit;
+    creditEl.style.display = '';
+  } else {
+    creditEl.style.display = 'none';
+  }
 
   const hasText = state.text && state.text.length>0;
   storyCanvas.classList.toggle('empty-state', !hasText);
@@ -593,6 +631,7 @@ function buildExportCSS(fontFaceCSS){
     .quote{font-family:'Tajawal',sans-serif;font-weight:900;direction:rtl;color:#fff;font-size:56px;line-height:1.65;text-shadow:0 2px 18px rgba(0,0,0,0.35);z-index:2;max-width:880px;}
     .src{font-family:'Cairo',sans-serif;font-weight:600;direction:rtl;color:rgba(255,255,255,0.85);font-size:30px;margin-top:38px;z-index:2;}
     .brand{position:absolute;bottom:55px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;direction:ltr;color:rgba(255,255,255,0.92);font-size:24px;font-weight:600;letter-spacing:1px;z-index:2;}
+    .credit{position:absolute;bottom:16px;left:16px;font-family:'IBM Plex Mono',monospace;direction:ltr;font-size:15px;color:rgba(255,255,255,0.65);z-index:2;}
     .bg-1{background:linear-gradient(160deg,#5A3B53,#714B67 55%,#00A09D 130%);}
     .bg-2{background:radial-gradient(circle at 30% 20%,#8C5F80,#5A3B53 70%);}
     .bg-3{background:linear-gradient(150deg,#015F64,#017E84 45%,#00A09D 100%);}
@@ -631,6 +670,25 @@ function buildExportCSS(fontFaceCSS){
   `;
 }
 
+let photoDataUriCache = {};
+async function getPhotoDataUri(url){
+  if(photoDataUriCache[url]) return photoDataUriCache[url];
+  try{
+    const res = await fetch(url, {mode:'cors'});
+    const blob = await res.blob();
+    const dataUri = await new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = ()=> resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    photoDataUriCache[url] = dataUri;
+    return dataUri;
+  }catch(e){
+    return url; // تراجع: استخدام الرابط مباشرة إن تعذّر التحويل
+  }
+}
+
 async function generateBlob(){
   const width = 1080;
   const height = state.ratio==='story' ? 1920 : 1080;
@@ -643,12 +701,21 @@ async function generateBlob(){
     <span class="corner tl">✦</span><span class="corner tr">✦</span>
     <span class="corner bl">✦</span><span class="corner br">✦</span>` : '';
 
+  let photoStyle = '';
+  let creditHTML = '';
+  if(bgDef && bgDef.photo){
+    const dataUri = await getPhotoDataUri(bgDef.photo);
+    photoStyle = `style="background-image:linear-gradient(180deg, rgba(20,15,20,0.35), rgba(20,15,20,0.55)), url('${dataUri}');background-size:cover;background-position:center;"`;
+    if(bgDef.credit) creditHTML = `<div class="credit">📷 ${escapeHtml(bgDef.credit)}</div>`;
+  }
+
   const bodyHTML = `
-    <div class="export-canvas ${state.ratio==='story'?'ratio-story':'ratio-post'} ${state.bg} ${ornate?'frame':''}">
+    <div class="export-canvas ${state.ratio==='story'?'ratio-story':'ratio-post'} ${bgDef && bgDef.photo ? '' : state.bg} ${ornate?'frame':''}" ${photoStyle}>
       ${cornersHTML}
       <div class="quote">${escapeHtml(state.text || '')}</div>
       ${state.source ? `<div class="src">${escapeHtml(state.source)}</div>` : ''}
       <div class="brand">◆ AHA_Accounting</div>
+      ${creditHTML}
     </div>`;
 
   const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
