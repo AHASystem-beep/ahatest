@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولّد حالات واتساب وانستا — AHA Systems | AHA_Accounting</title>
+<meta name="description" content="صمّم حالة واتساب أو انستا احترافية: خلفيات دينية جاهزة، ومعلومات محاسبية وعامة متجددة — من AHA Systems.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #F2F1F5;
+    --surface: #FFFFFF;
+    --ink: #2B2530;
+    --ink-soft: #6B6570;
+    --forest: #714B67;
+    --sheet-green: #017E84;
+    --sheet-green-soft: #E4F5F5;
+    --leaf: #00A09D;
+    --leaf-soft: #E1F5F3;
+    --grid-line: #E3E0E6;
+    --gold: #9C5FA8;
+    --gold-soft: #F1E7F4;
+    --radius: 10px;
+    --radius-sm: 8px;
+    --odoo-purple: #714B67;
+    --odoo-purple-dark: #5A3B53;
+    --odoo-teal: #00A09D;
+    --shadow-sm: 0 1px 3px rgba(43,37,48,0.08);
+    --shadow-md: 0 6px 20px rgba(113,75,103,0.14);
+    --shadow-lift: 0 14px 32px rgba(113,75,103,0.22);
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  ::selection{ background: var(--odoo-purple); color:#fff; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Cairo', sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 15px 60px;
+  }
+
+  h1,h2,h3{ font-family:'Tajawal', sans-serif; color: var(--forest); line-height:1.3; }
+  a{ color: inherit; text-decoration: none; }
+
+  .top-bar{
+    max-width: 1360px; margin: 0 auto 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .top-bar a.back-link{
+    font-family:'Tajawal', sans-serif; font-weight:700; color: var(--forest);
+    background: var(--surface); border:1px solid var(--grid-line); border-radius: 999px;
+    padding: 8px 18px; box-shadow: var(--shadow-sm); transition: var(--ease);
+  }
+  .top-bar a.back-link:hover{ box-shadow: var(--shadow-md); }
+  .top-bar h1{ font-size: 1.35rem; }
+  .top-bar .badge{
+    font-family:'IBM Plex Mono', monospace; direction: ltr; display:inline-block;
+    font-size: 0.72rem; color: var(--sheet-green); background: var(--sheet-green-soft);
+    padding: 4px 10px; border-radius: 999px; font-weight:600;
+  }
+
+  .container{
+    max-width: 1360px; margin: 0 auto; display:flex; gap: 28px; align-items:flex-start; flex-wrap: wrap;
+  }
+
+  /* ===== لوحة التحكم ===== */
+  .editor-panel{
+    flex: 1 1 420px; min-width: 320px;
+    background: var(--surface); border-radius: var(--radius);
+    padding: 22px; box-shadow: var(--shadow-sm); border: 1px solid var(--grid-line);
+  }
+  .panel-title{ font-size:1.1rem; margin-bottom: 16px; }
+
+  .field-block{ margin-bottom: 20px; }
+  .field-block > label.block-label{
+    display:block; font-family:'Tajawal', sans-serif; font-weight:700; font-size:0.85rem;
+    color: var(--forest); margin-bottom: 8px;
+  }
+
+  .tab-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .tab-btn{
+    flex:1; min-width: 100px; text-align:center; padding: 10px 8px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--grid-line); background: var(--bg); color: var(--ink-soft);
+    font-family:'Tajawal', sans-serif; font-weight:700; font-size:0.85rem; cursor:pointer; transition: var(--ease);
+  }
+  .tab-btn .tab-emoji{ display:block; font-size:1.1rem; margin-bottom:2px; }
+  .tab-btn.active{
+    background: var(--forest); border-color: var(--forest); color:#fff; box-shadow: var(--shadow-sm);
+  }
+
+  .ratio-row{ display:flex; gap:8px; }
+  .ratio-btn{
+    flex:1; padding: 9px; border-radius: var(--radius-sm); border:1.5px solid var(--grid-line);
+    background: var(--bg); color: var(--ink-soft); font-weight:700; font-size:0.82rem; cursor:pointer; transition: var(--ease);
+  }
+  .ratio-btn.active{ background: var(--leaf); border-color: var(--leaf); color:#fff; }
+
+  .bg-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .bg-swatch{
+    aspect-ratio: 1/1; border-radius: 8px; cursor:pointer; border: 2px solid transparent;
+    position:relative; overflow:hidden; transition: var(--ease);
+  }
+  .bg-swatch.selected{ border-color: var(--forest); box-shadow: var(--shadow-sm); transform: scale(1.04); }
+  .bg-swatch .lock-mark{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:0.65rem; background: rgba(0,0,0,0.35); opacity:0; transition:.2s;
+  }
+  .bg-swatch.disabled{ cursor:not-allowed; filter: grayscale(0.5) brightness(0.8); }
+  .bg-swatch.disabled .lock-mark{ opacity:1; }
+
+  textarea, input[type=text]{
+    width:100%; font-family:'Cairo', sans-serif; font-size:0.92rem; padding:10px 12px;
+    border:1.5px solid var(--grid-line); border-radius: var(--radius-sm); resize: vertical;
+    background: var(--bg); color: var(--ink);
+  }
+  textarea:focus, input[type=text]:focus{ outline:none; border-color: var(--leaf); }
+
+  .hint-text{ font-size:0.78rem; color: var(--ink-soft); margin-top:6px; line-height:1.6; }
+  .warn-box{
+    background:#FBEFEF; border:1px solid #E9C7C7; color:#8A3B3B; font-size:0.78rem;
+    border-radius: var(--radius-sm); padding:10px 12px; margin-top:8px; line-height:1.7;
+  }
+
+  .gen-row{ display:flex; gap:8px; margin-bottom:10px; }
+  .btn{
+    font-family:'Tajawal', sans-serif; font-weight:700; border:none; border-radius: 999px;
+    padding: 11px 18px; cursor:pointer; transition: var(--ease); font-size:0.88rem;
+  }
+  .btn-generate{ background: var(--gold-soft); color: var(--forest); flex:1; }
+  .btn-generate:hover{ background: var(--gold); color:#fff; }
+  .btn-next{ background: var(--bg); color: var(--ink-soft); border:1.5px solid var(--grid-line); }
+  .btn-next:hover{ color: var(--forest); border-color: var(--forest); }
+
+  .actions-row{ display:flex; gap:10px; margin-top: 22px; flex-wrap:wrap; }
+  .btn-primary{
+    background: var(--forest); color:#fff; flex:1; min-width:150px; padding:13px 18px; text-align:center;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:hover{ box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .btn-secondary{
+    background: var(--surface); color: var(--forest); border:1.5px solid var(--forest); flex:1; min-width:150px; padding:13px 18px; text-align:center;
+  }
+  .btn-secondary:hover{ background: var(--gold-soft); }
+  .status-msg{ font-size:0.8rem; color: var(--sheet-green); margin-top:10px; min-height: 1.2em; font-weight:600; }
+
+  /* ===== لوحة المعاينة ===== */
+  .preview-panel{
+    flex: 0 0 340px; display:flex; flex-direction:column; align-items:center; gap:14px;
+    position: sticky; top: 20px;
+  }
+  .canvas-viewport{
+    background:#111; border-radius: 22px; padding: 10px; box-shadow: var(--shadow-lift);
+    overflow:hidden; position:relative;
+  }
+  .canvas-viewport::after{ /* شق سماعة وهمي لمحاكاة الجوال */
+    content:''; position:absolute; top:16px; left:50%; transform:translateX(-50%);
+    width:70px; height:6px; background:#000; border-radius:6px; z-index:5;
+  }
+  .story-canvas{
+    width: 1080px; direction: ltr; transform-origin: top left; overflow:hidden;
+    position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; padding: 90px 80px;
+  }
+  .story-canvas.ratio-story{ height: 1920px; }
+  .story-canvas.ratio-post{ height: 1080px; }
+
+  .story-canvas .story-quote{
+    font-family:'Tajawal', sans-serif; font-weight:900; direction: rtl; color:#fff;
+    font-size: 56px; line-height:1.65; text-shadow: 0 2px 18px rgba(0,0,0,0.35); z-index:2;
+    max-width: 880px; word-break: break-word;
+  }
+  .story-canvas .story-source{
+    font-family:'Cairo', sans-serif; font-weight:600; direction: rtl; color: rgba(255,255,255,0.85);
+    font-size: 30px; margin-top: 38px; z-index:2;
+  }
+  .story-canvas .story-brand{
+    position:absolute; bottom: 55px; left:50%; transform: translateX(-50%);
+    font-family:'IBM Plex Mono', monospace; direction: ltr; color: rgba(255,255,255,0.92);
+    font-size: 24px; font-weight:600; letter-spacing: 1px; z-index:2; display:flex; align-items:center; gap:10px;
+  }
+  .story-canvas .story-brand::before{ content:'◆'; font-size:16px; }
+  .story-canvas.empty-state .story-quote{
+    color: rgba(255,255,255,0.55); font-weight:600; font-size:42px;
+  }
+
+  /* خلفيات القصص */
+  .bg-1{ background: linear-gradient(160deg, var(--odoo-purple-dark) 0%, var(--odoo-purple) 55%, var(--odoo-teal) 130%); }
+  .bg-2{ background: radial-gradient(circle at 30% 20%, #8C5F80, var(--odoo-purple-dark) 70%); }
+  .bg-3{ background: linear-gradient(150deg, #015F64, var(--sheet-green) 45%, var(--leaf) 100%); }
+  .bg-4{ background: linear-gradient(160deg, #4F2E48, var(--gold) 60%, #C9A0D6 130%); }
+  .bg-5{
+    background:
+      linear-gradient(var(--grid-line) 2px, transparent 2px),
+      linear-gradient(90deg, var(--grid-line) 2px, transparent 2px),
+      #FBFAF7;
+    background-size: 90px 90px;
+    position:relative;
+  }
+  .bg-5::before{
+    content:''; position:absolute; inset:0; border: 10px solid var(--sheet-green); opacity:0.9;
+  }
+  .bg-5 .story-quote, .bg-5 .story-source{ color: var(--forest); text-shadow:none; }
+  .bg-5 .story-brand{ color: var(--sheet-green); }
+  .bg-6{
+    background: linear-gradient(135deg, #C79A45 0%, var(--gold) 45%, var(--leaf) 100%);
+    position:relative; overflow:hidden;
+  }
+  .bg-6::before, .bg-6::after{
+    content:''; position:absolute; border-radius:50%; background: rgba(255,255,255,0.16);
+  }
+  .bg-6::before{ width:520px; height:520px; top:-160px; right:-160px; }
+  .bg-6::after{ width:380px; height:380px; bottom:-120px; left:-120px; }
+  .bg-7{
+    background: radial-gradient(circle, #6F4A66 0%, #382233 100%);
+    position:relative; overflow:hidden;
+  }
+  .bg-7::before{
+    content:''; position:absolute; inset:-40px;
+    background-image:
+      repeating-conic-gradient(from 0deg, rgba(212,175,120,0.16) 0deg 45deg, transparent 45deg 90deg);
+    background-size: 220px 220px;
+  }
+  .bg-8{
+    background: linear-gradient(160deg, #322038, #55305A 55%, #7A4A6E 130%);
+    position:relative; overflow:hidden;
+  }
+  .bg-8::before{
+    content:''; position:absolute; inset:-60px; opacity:0.5;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(212,175,120,0.22) 0 3px, transparent 3px 130px),
+      repeating-linear-gradient(-45deg, rgba(212,175,120,0.22) 0 3px, transparent 3px 130px);
+  }
+  .bg-9{
+    background: radial-gradient(circle, #1F3A5F 0%, #0B1B2E 100%);
+    position:relative; overflow:hidden;
+  }
+  .bg-9::before{
+    content:''; position:absolute; inset:-40px;
+    background-image:
+      repeating-conic-gradient(from 0deg, rgba(212,175,120,0.18) 0deg 45deg, transparent 45deg 90deg);
+    background-size: 220px 220px;
+  }
+  .bg-10{
+    background: linear-gradient(160deg, #0F3D30, #145C46 55%, #1E8A68 130%);
+    position:relative; overflow:hidden;
+  }
+  .bg-10::before{
+    content:''; position:absolute; inset:-60px; opacity:0.5;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,215,140,0.22) 0 3px, transparent 3px 130px),
+      repeating-linear-gradient(-45deg, rgba(255,215,140,0.22) 0 3px, transparent 3px 130px);
+  }
+  .bg-11{
+    background: radial-gradient(circle, #5C1F2E 0%, #2E0F17 100%);
+    position:relative; overflow:hidden;
+  }
+  .bg-11::before{
+    content:''; position:absolute; inset:-40px;
+    background-image:
+      repeating-conic-gradient(from 0deg, rgba(230,190,120,0.18) 0deg 45deg, transparent 45deg 90deg);
+    background-size: 220px 220px;
+  }
+  .bg-12{
+    background: linear-gradient(160deg, #14100A, #241C12 60%, #3A2C1A 130%);
+    position:relative; overflow:hidden;
+  }
+  .bg-12::before{
+    content:''; position:absolute; inset:-60px; opacity:0.35;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(212,175,120,0.25) 0 3px, transparent 3px 130px),
+      repeating-linear-gradient(-45deg, rgba(212,175,120,0.25) 0 3px, transparent 3px 130px);
+  }
+  .bg-13{ background: linear-gradient(150deg, #0B2545, #13315C 50%, #1B4B91 100%); }
+  .bg-14{ background: linear-gradient(150deg, #3A3F47, #565C66 55%, #232529 130%); }
+  .bg-15{ background: linear-gradient(150deg, #123524, #1F5C3E 55%, #0B2318 130%); }
+  .bg-16{ background: linear-gradient(135deg, #FF7E5F, #FD3A69 50%, #C41E63 100%); }
+  .bg-17{ background: linear-gradient(135deg, #4E54C8, #8F94FB 55%, #6441A5 100%); }
+  .bg-18{ background: linear-gradient(135deg, #FF512F, #F09819 100%); }
+  .bg-19{ background: linear-gradient(135deg, #F6A6B2, #7F7FD5 100%); }
+  .bg-20{ background: linear-gradient(135deg, #11998E, #38EF7D 100%); }
+
+  .frame-ornate{ z-index:2; }
+  .frame-ornate::before{
+    content:''; position:absolute; inset: 55px; border: 3px solid rgba(212,175,120,0.75);
+    z-index:1; pointer-events:none;
+  }
+  .frame-ornate .corner{
+    position:absolute; font-size:40px; color: rgba(212,175,120,0.9); z-index:2; pointer-events:none;
+  }
+  .frame-ornate .corner.tl{ top:78px; right:78px; }
+  .frame-ornate .corner.tr{ top:78px; left:78px; }
+  .frame-ornate .corner.bl{ bottom:78px; right:78px; }
+  .frame-ornate .corner.br{ bottom:78px; left:78px; }
+
+  @media (max-width: 900px){
+    .preview-panel{ position:static; width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="back-link">→ رجوع إلى لوحة الأدوات</a>
+  <div>
+    <h1>مولّد حالات واتساب وانستا <span class="badge">BETA</span></h1>
+  </div>
+</div>
+
+<div class="container">
+  <div class="editor-panel">
+    <h2 class="panel-title">صمّم حالتك خطوة بخطوة</h2>
+
+    <div class="field-block">
+      <label class="block-label">1) اختر نوع المحتوى</label>
+      <div class="tab-row" id="catTabs">
+        <button type="button" class="tab-btn active" data-cat="religious"><span class="tab-emoji">🕌</span>دينية</button>
+        <button type="button" class="tab-btn" data-cat="accounting"><span class="tab-emoji">📊</span>محاسبية</button>
+        <button type="button" class="tab-btn" data-cat="general"><span class="tab-emoji">💡</span>ترفيهية</button>
+      </div>
+    </div>
+
+    <div class="field-block">
+      <label class="block-label">2) أبعاد الصورة</label>
+      <div class="ratio-row" id="ratioTabs">
+        <button type="button" class="ratio-btn active" data-ratio="story">ستوري (9:16)</button>
+        <button type="button" class="ratio-btn" data-ratio="post">منشور مربّع (1:1)</button>
+      </div>
+    </div>
+
+    <div class="field-block">
+      <label class="block-label">3) اختر الخلفية</label>
+      <div class="bg-grid" id="bgGrid"></div>
+    </div>
+
+    <div class="field-block" id="religiousBlock">
+      <label class="block-label">4) اكتب نص الآية أو الحديث بنفسك</label>
+      <textarea id="religiousText" rows="4" placeholder="الصق هنا نص الآية أو الحديث كما تريده بالضبط..."></textarea>
+      <input type="text" id="religiousSource" placeholder="المصدر (مثال: سورة البقرة ٢٨٦)" style="margin-top:8px;">
+      <div class="warn-box">
+        لضمان دقة النص الديني 100%، هذه الأداة لا تولّد آيات أو أحاديث تلقائياً — فقط تصمم لك خلفية احترافية، وأنت تكتب النص المعتمد من مصحفك أو مرجعك الموثوق.
+      </div>
+    </div>
+
+    <div class="field-block" id="dynamicBlock" style="display:none;">
+      <label class="block-label" id="dynamicLabel">4) نص الحالة</label>
+      <div class="gen-row">
+        <button type="button" class="btn btn-generate" id="btnGenerate">✨ توليد نص جديد</button>
+      </div>
+      <textarea id="dynamicText" rows="4"></textarea>
+      <input type="text" id="dynamicSource" style="margin-top:8px;" readonly>
+      <div class="hint-text">يمكنك تعديل النص كما تشاء بعد التوليد.</div>
+    </div>
+
+    <div class="actions-row">
+      <button type="button" class="btn btn-primary" id="btnShare">📤 مشاركة إلى واتساب</button>
+      <button type="button" class="btn btn-secondary" id="btnDownload">⬇ تحميل الصورة</button>
+    </div>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+  <div class="preview-panel">
+    <div class="canvas-viewport" id="canvasViewport">
+      <div class="story-canvas ratio-story bg-7 frame-ornate empty-state" id="storyCanvas">
+        <span class="corner tl">✦</span><span class="corner tr">✦</span>
+        <span class="corner bl">✦</span><span class="corner br">✦</span>
+        <div class="story-quote" id="storyQuote">اكتب نصك هنا ليظهر مباشرة في المعاينة</div>
+        <div class="story-source" id="storySource"></div>
+        <div class="story-brand">AHA_Accounting</div>
+      </div>
+    </div>
+    <div class="hint-text" style="text-align:center;">معاينة حيّة — الصورة النهائية تُصدَّر بجودة كاملة (1080px)</div>
+  </div>
+</div>
+
+<script>
+/* ==================== بيانات المحتوى ==================== */
+const CONTENT = {
+  accounting: [
+    {text:"القاعدة الذهبية في المحاسبة: لكل عملية مالية طرفان متساويان — مدين ودائن، ومجموع المدين يساوي دائماً مجموع الدائن.", source:"معلومة محاسبية"},
+    {text:"الأصل المتداول هو ما يمكن تحويله إلى نقد خلال سنة مالية واحدة، كالمخزون والذمم المدينة والنقدية.", source:"معلومة محاسبية"},
+    {text:"الفرق بين الربح المحاسبي والتدفق النقدي أن الأول يُحتسب عند استحقاق الإيراد، والثاني عند التحصيل الفعلي.", source:"معلومة محاسبية"},
+    {text:"معايير IFRS الدولية تهدف إلى توحيد لغة التقارير المالية بين الشركات حول العالم.", source:"معلومة محاسبية"},
+    {text:"الإهلاك ليس خروجاً فعلياً للنقد، بل توزيع لتكلفة الأصل الثابت على عمره الإنتاجي.", source:"معلومة محاسبية"},
+    {text:"التسوية البنكية أداة أساسية لمطابقة رصيد دفاتر الشركة مع كشف الحساب البنكي واكتشاف الفروقات.", source:"معلومة محاسبية"},
+    {text:"رأس المال العامل = الأصول المتداولة ناقص الخصوم المتداولة، وهو مقياس مباشر لسيولة المنشأة.", source:"معلومة محاسبية"},
+    {text:"مبدأ الاستحقاق يقضي بتسجيل الإيراد والمصروف وقت حدوثهما لا وقت استلام أو دفع النقد.", source:"معلومة محاسبية"},
+    {text:"قائمة التدفقات النقدية تُقسّم الأنشطة إلى تشغيلية واستثمارية وتمويلية، لفهم مصادر النقد واستخداماته.", source:"معلومة محاسبية"},
+    {text:"المصروف الرأسمالي يُضاف لتكلفة الأصل، بينما المصروف الإيرادي يُحمَّل على قائمة الدخل فوراً.", source:"معلومة محاسبية"},
+    {text:"نظام الجرد المستمر يحدّث رصيد المخزون مع كل عملية بيع أو شراء، بعكس الجرد الدوري.", source:"معلومة محاسبية"},
+    {text:"الذمم المدينة المشكوك في تحصيلها يُخصَّص لها مخصص احترازي وفق مبدأ الحيطة والحذر.", source:"معلومة محاسبية"},
+    {text:"ميزان المراجعة أداة للتأكد من توازن مجموع الأرصدة المدينة مع مجموع الأرصدة الدائنة قبل إعداد القوائم المالية.", source:"معلومة محاسبية"},
+    {text:"القيمة الدفترية للأصل = التكلفة التاريخية ناقص مجمع الإهلاك، وقد تختلف عن قيمته السوقية.", source:"معلومة محاسبية"},
+    {text:"الفصل بين المهام من أهم أدوات الرقابة الداخلية للحد من الأخطاء والغش المالي.", source:"معلومة محاسبية"}
+  ],
+  general: [
+    {text:"أطول نهر في العالم هو النيل، بطول يقارب 6650 كيلومتراً.", source:"معلومة عامة"},
+    {text:"العسل لا يفسد أبداً إذا خُزّن جيداً؛ عُثر على عسل صالح في مقابر فرعونية عمرها آلاف السنين.", source:"معلومة عامة"},
+    {text:"القلب البشري ينبض نحو 100 ألف مرة في اليوم الواحد.", source:"معلومة عامة"},
+    {text:"أكبر محيط في العالم هو المحيط الهادئ، ويغطي أكثر من ثلث مساحة سطح الأرض.", source:"معلومة عامة"},
+    {text:"الأخطبوط لديه ثلاثة قلوب، ودمه أزرق اللون.", source:"معلومة عامة"},
+    {text:"ضوء الشمس يستغرق نحو 8 دقائق و20 ثانية للوصول إلى الأرض.", source:"معلومة عامة"},
+    {text:"أعلى قمة جبلية في العالم هي إفرست، بارتفاع يقارب 8849 متراً.", source:"معلومة عامة"},
+    {text:"اللغة العربية تضم ملايين المفردات، وهي من أغنى لغات العالم من حيث الثراء اللغوي.", source:"معلومة عامة"},
+    {text:"أسرع حيوان بري هو الفهد، وقد يصل إلى سرعة 110 كم/س في مسافات قصيرة.", source:"معلومة عامة"},
+    {text:"جسم الإنسان يحتوي على نحو 37 تريليون خلية.", source:"معلومة عامة"},
+    {text:"أكبر صحراء حارة في العالم هي الصحراء الكبرى في أفريقيا.", source:"معلومة عامة"},
+    {text:"النحل قادر على تمييز الوجوه البشرية عبر أنماط بصرية معينة يتعلمها.", source:"معلومة عامة"},
+    {text:"أول رسالة نصية SMS أُرسلت عام 1992، وكانت تحمل عبارة Merry Christmas.", source:"معلومة عامة"},
+    {text:"الماس يتكوّن تحت ضغط وحرارة هائلين، على عمق يزيد عن 150 كيلومتراً تحت سطح الأرض.", source:"معلومة عامة"},
+    {text:"الفراشات تتذوق الطعام عبر أقدامها وليس عبر فمها فقط.", source:"معلومة عامة"}
+  ]
+};
+
+/* ==================== الخلفيات ==================== */
+const BACKGROUNDS = [
+  {id:'bg-1', cats:['religious','accounting','general'], style:'linear-gradient(160deg,#5A3B53,#714B67 55%,#00A09D 130%)'},
+  {id:'bg-2', cats:['religious','general'],               style:'radial-gradient(circle at 30% 20%,#8C5F80,#5A3B53 70%)'},
+  {id:'bg-3', cats:['accounting','general'],               style:'linear-gradient(150deg,#015F64,#017E84 45%,#00A09D 100%)'},
+  {id:'bg-4', cats:['religious','general'],                style:'linear-gradient(160deg,#4F2E48,#9C5FA8 60%,#C9A0D6 130%)'},
+  {id:'bg-5', cats:['accounting'],                          style:'repeating-linear-gradient(#E3E0E6 0 2px,transparent 2px 90px),#FBFAF7'},
+  {id:'bg-6', cats:['general'],                             style:'linear-gradient(135deg,#C79A45,#9C5FA8 45%,#00A09D 100%)'},
+  {id:'bg-7', cats:['religious'],                           style:'radial-gradient(circle,#6F4A66,#382233 100%)', ornate:true},
+  {id:'bg-8', cats:['religious'],                           style:'linear-gradient(160deg,#322038,#55305A 55%,#7A4A6E 130%)', ornate:true},
+  {id:'bg-9', cats:['religious'],                           style:'radial-gradient(circle,#1F3A5F,#0B1B2E 100%)', ornate:true},
+  {id:'bg-10', cats:['religious'],                          style:'linear-gradient(160deg,#0F3D30,#145C46 55%,#1E8A68 130%)', ornate:true},
+  {id:'bg-11', cats:['religious'],                          style:'radial-gradient(circle,#5C1F2E,#2E0F17 100%)', ornate:true},
+  {id:'bg-12', cats:['religious'],                          style:'linear-gradient(160deg,#14100A,#241C12 60%,#3A2C1A 130%)', ornate:true},
+  {id:'bg-13', cats:['accounting'],                         style:'linear-gradient(150deg,#0B2545,#13315C 50%,#1B4B91 100%)'},
+  {id:'bg-14', cats:['accounting'],                         style:'linear-gradient(150deg,#3A3F47,#565C66 55%,#232529 130%)'},
+  {id:'bg-15', cats:['accounting'],                         style:'linear-gradient(150deg,#123524,#1F5C3E 55%,#0B2318 130%)'},
+  {id:'bg-16', cats:['general'],                            style:'linear-gradient(135deg,#FF7E5F,#FD3A69 50%,#C41E63 100%)'},
+  {id:'bg-17', cats:['general'],                            style:'linear-gradient(135deg,#4E54C8,#8F94FB 55%,#6441A5 100%)'},
+  {id:'bg-18', cats:['general'],                            style:'linear-gradient(135deg,#FF512F,#F09819 100%)'},
+  {id:'bg-19', cats:['general'],                            style:'linear-gradient(135deg,#F6A6B2,#7F7FD5 100%)'},
+  {id:'bg-20', cats:['general'],                            style:'linear-gradient(135deg,#11998E,#38EF7D 100%)'}
+];
+
+const DEFAULT_BG = { religious:'bg-7', accounting:'bg-5', general:'bg-1' };
+
+/* ==================== الحالة ==================== */
+let state = {
+  cat: 'religious',
+  ratio: 'story',
+  bg: 'bg-7',
+  text: '',
+  source: '',
+  lastGenIndex: {accounting:-1, general:-1}
+};
+
+/* ==================== بناء شبكة الخلفيات ==================== */
+const bgGrid = document.getElementById('bgGrid');
+function renderBgGrid(){
+  bgGrid.innerHTML = '';
+  BACKGROUNDS.forEach(bg=>{
+    const allowed = bg.cats.includes(state.cat);
+    const div = document.createElement('div');
+    div.className = 'bg-swatch' + (bg.id===state.bg ? ' selected':'') + (allowed ? '' : ' disabled');
+    div.style.background = bg.style;
+    div.title = allowed ? 'اختر هذه الخلفية' : 'غير متاحة لهذه الفئة';
+    const lock = document.createElement('div');
+    lock.className = 'lock-mark';
+    lock.textContent = allowed ? '' : '🔒';
+    div.appendChild(lock);
+    if(allowed){
+      div.addEventListener('click', ()=>{ state.bg = bg.id; renderBgGrid(); renderCanvas(); });
+    }
+    bgGrid.appendChild(div);
+  });
+}
+
+/* ==================== التبويبات ==================== */
+document.querySelectorAll('#catTabs .tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#catTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.cat = btn.dataset.cat;
+    state.bg = DEFAULT_BG[state.cat];
+    document.getElementById('religiousBlock').style.display = state.cat==='religious' ? '' : 'none';
+    document.getElementById('dynamicBlock').style.display = state.cat==='religious' ? 'none' : '';
+    if(state.cat!=='religious'){
+      document.getElementById('dynamicLabel').textContent = '4) نص الحالة (' + (state.cat==='accounting' ? 'محاسبية':'ترفيهية') + ')';
+      generateText(true);
+    } else {
+      state.text = document.getElementById('religiousText').value.trim();
+      state.source = document.getElementById('religiousSource').value.trim();
+    }
+    renderBgGrid();
+    renderCanvas();
+  });
+});
+
+document.querySelectorAll('#ratioTabs .ratio-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#ratioTabs .ratio-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.ratio = btn.dataset.ratio;
+    renderCanvas();
+  });
+});
+
+/* ==================== النصوص ==================== */
+const religiousText = document.getElementById('religiousText');
+const religiousSource = document.getElementById('religiousSource');
+religiousText.addEventListener('input', ()=>{ state.text = religiousText.value.trim(); renderCanvas(); });
+religiousSource.addEventListener('input', ()=>{ state.source = religiousSource.value.trim(); renderCanvas(); });
+
+const dynamicText = document.getElementById('dynamicText');
+const dynamicSource = document.getElementById('dynamicSource');
+dynamicText.addEventListener('input', ()=>{ state.text = dynamicText.value.trim(); renderCanvas(); });
+
+function generateText(forceFirst){
+  const list = CONTENT[state.cat];
+  if(!list) return;
+  let idx;
+  if(forceFirst){
+    idx = Math.floor(Math.random()*list.length);
+  } else {
+    do{ idx = Math.floor(Math.random()*list.length); }while(list.length>1 && idx===state.lastGenIndex[state.cat]);
+  }
+  state.lastGenIndex[state.cat] = idx;
+  const item = list[idx];
+  state.text = item.text;
+  state.source = item.source;
+  dynamicText.value = item.text;
+  dynamicSource.value = item.source;
+  renderCanvas();
+}
+document.getElementById('btnGenerate').addEventListener('click', ()=> generateText(false));
+
+/* ==================== المعاينة الحية ==================== */
+const storyCanvas = document.getElementById('storyCanvas');
+const storyQuote = document.getElementById('storyQuote');
+const storySource = document.getElementById('storySource');
+const canvasViewport = document.getElementById('canvasViewport');
+
+function renderCanvas(){
+  storyCanvas.className = 'story-canvas ' + (state.ratio==='story' ? 'ratio-story':'ratio-post') + ' ' + state.bg;
+  const bgDef = BACKGROUNDS.find(b=>b.id===state.bg);
+  storyCanvas.classList.toggle('frame-ornate', !!(bgDef && bgDef.ornate));
+
+  const hasText = state.text && state.text.length>0;
+  storyCanvas.classList.toggle('empty-state', !hasText);
+  storyQuote.textContent = hasText ? state.text : 'اكتب نصك هنا ليظهر مباشرة في المعاينة';
+  storySource.textContent = state.source || '';
+  storySource.style.display = state.source ? '' : 'none';
+
+  scaleCanvas();
+}
+
+function scaleCanvas(){
+  const viewportWidth = 300;
+  const targetHeight = state.ratio==='story' ? 1920 : 1080;
+  const scale = viewportWidth/1080;
+  storyCanvas.style.transform = 'scale(' + scale + ')';
+  canvasViewport.style.width = (viewportWidth+20) + 'px';
+  canvasViewport.style.height = (targetHeight*scale + 20) + 'px';
+}
+
+window.addEventListener('resize', scaleCanvas);
+
+/* ==================== تجهيز الخطوط للتصدير ==================== */
+let cachedFontFaceCSS = null;
+async function getFontFaceCSS(){
+  if(cachedFontFaceCSS !== null) return cachedFontFaceCSS;
+  try{
+    const res = await fetch('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&family=Cairo:wght@400;600;700&family=IBM+Plex+Mono:wght@600&display=swap');
+    const css = await res.text();
+    const blocks = css.match(/@font-face\s*{[^}]*}/g) || [];
+    const arabicBlocks = blocks.filter(b => b.includes('U+0600') || b.includes('U+0750') || !b.includes('unicode-range'));
+    cachedFontFaceCSS = arabicBlocks.join('\n');
+  }catch(e){
+    cachedFontFaceCSS = '';
+  }
+  return cachedFontFaceCSS;
+}
+
+/* ==================== التصدير ==================== */
+function buildExportCSS(fontFaceCSS){
+  return `
+    ${fontFaceCSS}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    .export-canvas{width:1080px;direction:ltr;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:90px 80px;}
+    .export-canvas.ratio-story{height:1920px;}
+    .export-canvas.ratio-post{height:1080px;}
+    .quote{font-family:'Tajawal',sans-serif;font-weight:900;direction:rtl;color:#fff;font-size:56px;line-height:1.65;text-shadow:0 2px 18px rgba(0,0,0,0.35);z-index:2;max-width:880px;}
+    .src{font-family:'Cairo',sans-serif;font-weight:600;direction:rtl;color:rgba(255,255,255,0.85);font-size:30px;margin-top:38px;z-index:2;}
+    .brand{position:absolute;bottom:55px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;direction:ltr;color:rgba(255,255,255,0.92);font-size:24px;font-weight:600;letter-spacing:1px;z-index:2;}
+    .bg-1{background:linear-gradient(160deg,#5A3B53,#714B67 55%,#00A09D 130%);}
+    .bg-2{background:radial-gradient(circle at 30% 20%,#8C5F80,#5A3B53 70%);}
+    .bg-3{background:linear-gradient(150deg,#015F64,#017E84 45%,#00A09D 100%);}
+    .bg-4{background:linear-gradient(160deg,#4F2E48,#9C5FA8 60%,#C9A0D6 130%);}
+    .bg-5{background:repeating-linear-gradient(#E3E0E6 0 2px,transparent 2px 90px),repeating-linear-gradient(90deg,#E3E0E6 0 2px,transparent 2px 90px),#FBFAF7;position:relative;}
+    .bg-5::before{content:'';position:absolute;inset:0;border:10px solid #017E84;}
+    .bg-5 .quote,.bg-5 .src{color:#714B67;text-shadow:none;}
+    .bg-5 .brand{color:#017E84;}
+    .bg-6{background:linear-gradient(135deg,#C79A45,#9C5FA8 45%,#00A09D 100%);position:relative;overflow:hidden;}
+    .bg-6::before{content:'';position:absolute;width:520px;height:520px;top:-160px;right:-160px;border-radius:50%;background:rgba(255,255,255,0.16);}
+    .bg-6::after{content:'';position:absolute;width:380px;height:380px;bottom:-120px;left:-120px;border-radius:50%;background:rgba(255,255,255,0.16);}
+    .bg-7{background:radial-gradient(circle,#6F4A66,#382233 100%);position:relative;overflow:hidden;}
+    .bg-7::before{content:'';position:absolute;inset:-40px;background-image:repeating-conic-gradient(from 0deg,rgba(212,175,120,0.16) 0deg 45deg,transparent 45deg 90deg);background-size:220px 220px;}
+    .bg-8{background:linear-gradient(160deg,#322038,#55305A 55%,#7A4A6E 130%);position:relative;overflow:hidden;}
+    .bg-8::before{content:'';position:absolute;inset:-60px;opacity:0.5;background-image:repeating-linear-gradient(45deg,rgba(212,175,120,0.22) 0 3px,transparent 3px 130px),repeating-linear-gradient(-45deg,rgba(212,175,120,0.22) 0 3px,transparent 3px 130px);}
+    .bg-9{background:radial-gradient(circle,#1F3A5F,#0B1B2E 100%);position:relative;overflow:hidden;}
+    .bg-9::before{content:'';position:absolute;inset:-40px;background-image:repeating-conic-gradient(from 0deg,rgba(212,175,120,0.18) 0deg 45deg,transparent 45deg 90deg);background-size:220px 220px;}
+    .bg-10{background:linear-gradient(160deg,#0F3D30,#145C46 55%,#1E8A68 130%);position:relative;overflow:hidden;}
+    .bg-10::before{content:'';position:absolute;inset:-60px;opacity:0.5;background-image:repeating-linear-gradient(45deg,rgba(255,215,140,0.22) 0 3px,transparent 3px 130px),repeating-linear-gradient(-45deg,rgba(255,215,140,0.22) 0 3px,transparent 3px 130px);}
+    .bg-11{background:radial-gradient(circle,#5C1F2E,#2E0F17 100%);position:relative;overflow:hidden;}
+    .bg-11::before{content:'';position:absolute;inset:-40px;background-image:repeating-conic-gradient(from 0deg,rgba(230,190,120,0.18) 0deg 45deg,transparent 45deg 90deg);background-size:220px 220px;}
+    .bg-12{background:linear-gradient(160deg,#14100A,#241C12 60%,#3A2C1A 130%);position:relative;overflow:hidden;}
+    .bg-12::before{content:'';position:absolute;inset:-60px;opacity:0.35;background-image:repeating-linear-gradient(45deg,rgba(212,175,120,0.25) 0 3px,transparent 3px 130px),repeating-linear-gradient(-45deg,rgba(212,175,120,0.25) 0 3px,transparent 3px 130px);}
+    .bg-13{background:linear-gradient(150deg,#0B2545,#13315C 50%,#1B4B91 100%);}
+    .bg-14{background:linear-gradient(150deg,#3A3F47,#565C66 55%,#232529 130%);}
+    .bg-15{background:linear-gradient(150deg,#123524,#1F5C3E 55%,#0B2318 130%);}
+    .bg-16{background:linear-gradient(135deg,#FF7E5F,#FD3A69 50%,#C41E63 100%);}
+    .bg-17{background:linear-gradient(135deg,#4E54C8,#8F94FB 55%,#6441A5 100%);}
+    .bg-18{background:linear-gradient(135deg,#FF512F,#F09819 100%);}
+    .bg-19{background:linear-gradient(135deg,#F6A6B2,#7F7FD5 100%);}
+    .bg-20{background:linear-gradient(135deg,#11998E,#38EF7D 100%);}
+    .frame::before{content:'';position:absolute;inset:55px;border:3px solid rgba(212,175,120,0.75);z-index:1;}
+    .corner{position:absolute;font-size:40px;color:rgba(212,175,120,0.9);z-index:2;}
+    .corner.tl{top:78px;right:78px;} .corner.tr{top:78px;left:78px;}
+    .corner.bl{bottom:78px;right:78px;} .corner.br{bottom:78px;left:78px;}
+  `;
+}
+
+async function generateBlob(){
+  const width = 1080;
+  const height = state.ratio==='story' ? 1920 : 1080;
+  const fontFaceCSS = await getFontFaceCSS();
+  const css = buildExportCSS(fontFaceCSS);
+  const bgDef = BACKGROUNDS.find(b=>b.id===state.bg);
+  const ornate = !!(bgDef && bgDef.ornate);
+
+  const cornersHTML = ornate ? `
+    <span class="corner tl">✦</span><span class="corner tr">✦</span>
+    <span class="corner bl">✦</span><span class="corner br">✦</span>` : '';
+
+  const bodyHTML = `
+    <div class="export-canvas ${state.ratio==='story'?'ratio-story':'ratio-post'} ${state.bg} ${ornate?'frame':''}">
+      ${cornersHTML}
+      <div class="quote">${escapeHtml(state.text || '')}</div>
+      ${state.source ? `<div class="src">${escapeHtml(state.source)}</div>` : ''}
+      <div class="brand">◆ AHA_Accounting</div>
+    </div>`;
+
+  const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+    <foreignObject width="100%" height="100%">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <style>${css}</style>
+        ${bodyHTML}
+      </div>
+    </foreignObject>
+  </svg>`;
+
+  const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob=>{
+        if(blob) resolve(blob); else reject(new Error('فشل إنشاء الصورة'));
+      }, 'image/png');
+    };
+    img.onerror = ()=> reject(new Error('فشل تحميل التصميم للتصدير'));
+    img.src = dataUrl;
+  });
+}
+
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+const statusMsg = document.getElementById('statusMsg');
+
+document.getElementById('btnDownload').addEventListener('click', async ()=>{
+  if(!state.text){ statusMsg.textContent = 'الرجاء كتابة نص للحالة أولاً.'; statusMsg.style.color = '#8A3B3B'; return; }
+  statusMsg.style.color = 'var(--sheet-green)';
+  statusMsg.textContent = 'جارٍ تجهيز الصورة...';
+  try{
+    const blob = await generateBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'aha-status.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=> URL.revokeObjectURL(url), 4000);
+    statusMsg.textContent = 'تم تحميل الصورة بنجاح ✔';
+  }catch(e){
+    statusMsg.style.color = '#8A3B3B';
+    statusMsg.textContent = 'حدث خطأ أثناء إنشاء الصورة، حاول مجدداً.';
+  }
+});
+
+document.getElementById('btnShare').addEventListener('click', async ()=>{
+  if(!state.text){ statusMsg.textContent = 'الرجاء كتابة نص للحالة أولاً.'; statusMsg.style.color = '#8A3B3B'; return; }
+  statusMsg.style.color = 'var(--sheet-green)';
+  statusMsg.textContent = 'جارٍ تجهيز الصورة...';
+  try{
+    const blob = await generateBlob();
+    const file = new File([blob], 'aha-status.png', {type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:'حالة AHA', text:''});
+      statusMsg.textContent = 'تمت المشاركة ✔';
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'aha-status.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=> URL.revokeObjectURL(url), 4000);
+      statusMsg.textContent = 'المشاركة المباشرة غير مدعومة على هذا المتصفح، تم تحميل الصورة بدلاً منها.';
+    }
+  }catch(e){
+    statusMsg.style.color = '#8A3B3B';
+    statusMsg.textContent = 'حدث خطأ أثناء التجهيز، حاول مجدداً.';
+  }
+});
+
+/* ==================== التهيئة الأولى ==================== */
+renderBgGrid();
+renderCanvas();
+</script>
+</body>
+</html>
