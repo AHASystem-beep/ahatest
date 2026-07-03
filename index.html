@@ -771,10 +771,10 @@
   <div class="dashboard-shell">
     <aside class="dashboard-sidebar">
       <div class="cat-label">التصنيفات</div>
-      <button type="button" class="dashboard-cat active" data-filter="all">الكل <span class="count">10</span></button>
-      <button type="button" class="dashboard-cat" data-filter="tools">أدوات مجانية <span class="count">4</span></button>
-      <button type="button" class="dashboard-cat" data-filter="projects">أنظمة ومشاريع <span class="count">5</span></button>
-      <button type="button" class="dashboard-cat" data-filter="services">خدمات وتدريب <span class="count">1</span></button>
+      <button type="button" class="dashboard-cat active" data-filter="all">الكل <span class="count" id="countAll">10</span></button>
+      <button type="button" class="dashboard-cat" data-filter="tools">أدوات مجانية <span class="count" id="countTools">4</span></button>
+      <button type="button" class="dashboard-cat" data-filter="projects">أنظمة ومشاريع <span class="count" id="countProjects">5</span></button>
+      <button type="button" class="dashboard-cat" data-filter="services">خدمات وتدريب <span class="count" id="countServices">1</span></button>
     </aside>
 
     <div>
@@ -786,137 +786,7 @@
         </label>
       </div>
 
-      <div class="module-grid" id="moduleGrid">
-        <div class="module-card" data-category="tools" data-name="مولّد السيرة الذاتية">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c1">📄</div>
-          <div class="module-body">
-            <h3>مولّد السيرة الذاتية</h3>
-            <p>املأ بياناتك الأساسية واحصل على سيرة ذاتية احترافية وحديثة، جاهزة للطباعة أو التحميل كـ PDF مباشرة.</p>
-            <div class="module-status-row">
-              <span class="module-status is-ready">جاهزة</span>
-              <a href="cv.html" class="module-link">افتح الأداة ←</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="tools" data-name="حاسبة الزكاة الشاملة">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c2">🕌</div>
-          <div class="module-body">
-            <h3>حاسبة الزكاة الشاملة</h3>
-            <p>احسب زكاة الذهب والفضة والنقود وعروض التجارة والزروع والأنعام بدقة، مع مرجع شرعي موثّق لكل باب.</p>
-            <div class="module-status-row">
-              <span class="module-status is-ready">جاهزة</span>
-              <a href="zakat.html" class="module-link">افتح الأداة ←</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card is-disabled" data-category="tools" data-name="مولّد حالات واتساب وانستا">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c3">📱</div>
-          <div class="module-body">
-            <h3>مولّد حالات واتساب وانستا</h3>
-            <p>صمّم صورة جاهزة للمشاركة تحمل موعظة دينية، حكمة، أو معلومة محاسبية — بضغطة واحدة.</p>
-            <div class="module-status-row">
-              <span class="module-status is-soon">قريباً</span>
-              <span class="module-link disabled">قريباً ←</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card is-disabled" data-category="tools" data-name="مولّد الفواتير">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c4">🧾</div>
-          <div class="module-body">
-            <h3>مولّد الفواتير</h3>
-            <p>أنشئ فاتورة احترافية جاهزة للطباعة خلال ثوانٍ، لأصحاب المحال والمشاريع الصغيرة.</p>
-            <div class="module-status-row">
-              <span class="module-status is-soon">قريباً</span>
-              <span class="module-link disabled">قريباً ←</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="projects" data-name="CredNote — مفكرة الائتمان">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c5">💳</div>
-          <div class="module-body">
-            <h3>CredNote — مفكرة الائتمان</h3>
-            <p>بوت وتطبيق ويب لإدارة الديون والائتمان للتجار، مع حاسبة زكاة مدمجة.</p>
-            <div class="module-status-row">
-              <span class="module-status">نظام تشغيلي</span>
-              <span class="module-link">تفاصيل ومراسلة ←</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="projects" data-name="نظام سلفة">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c6">💰</div>
-          <div class="module-body">
-            <h3>نظام سلفة</h3>
-            <p>تطبيق Telegram Mini App لإدارة سلف المشاريع لعدة عملاء (Multi-tenant) بمزامنة كاملة مع جوجل شيت.</p>
-            <div class="module-status-row">
-              <span class="module-status">نظام تشغيلي</span>
-              <a href="selfa.html" class="module-link">تفاصيل ومراسلة ←</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="projects" data-name="إدارة ورشات PVC">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c4">🚪</div>
-          <div class="module-body">
-            <h3>إدارة ورشات PVC</h3>
-            <p>نظام جوجل شيت لإدارة ورشات تجميع وتشكيل أبواب وواجهات PVC، من متابعة الإنتاج إلى الجاهزية للتسليم.</p>
-            <div class="module-status-row">
-              <span class="module-status">نظام تشغيلي</span>
-              <span class="module-link">تفاصيل ومراسلة ←</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="projects" data-name="RIS — نظام مراكز الأشعة">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c1">🩻</div>
-          <div class="module-body">
-            <h3>RIS — نظام مراكز الأشعة</h3>
-            <p>نظام إدارة كامل لمراكز الأشعة، مربوط ببوت تيليغرام بذكاء اصطناعي يجاوب مباشرة من بيانات النظام.</p>
-            <div class="module-status-row">
-              <span class="module-status">نظام تشغيلي</span>
-              <span class="module-link">تفاصيل ومراسلة ←</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="projects" data-name="CashOnHand — يومية الصندوق الذكية">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c2">💵</div>
-          <div class="module-body">
-            <h3>CashOnHand — يومية الصندوق الذكية</h3>
-            <p>دفتر يومية صندوق ذكي ومؤتمت بالكامل عبر بوت تيليغرام وجوجل شيت، بدون إدخال يدوي معقّد.</p>
-            <div class="module-status-row">
-              <span class="module-status">نظام تشغيلي</span>
-              <span class="module-link">تفاصيل ومراسلة ←</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="module-card" data-category="services" data-name="برنامج X-per">
-          <span class="module-kebab">⋮</span>
-          <div class="module-icon tile-c3">🎓</div>
-          <div class="module-body">
-            <h3>برنامج X-per</h3>
-            <p>نقدّم خدمة تجهيز وتدريب على برنامج المحاسبة X-per — نظام ERP سحابي معتمد في السوق العربية والدولية.</p>
-            <div class="module-status-row">
-              <span class="module-status">خدمة</span>
-              <span class="module-link">استفسر عن الخدمة ←</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="module-grid" id="moduleGrid"></div>
 
       <p id="moduleEmpty" style="display:none; text-align:center; color:var(--ink-soft); padding:40px 0;">لا توجد نتائج مطابقة للبحث.</p>
     </div>
@@ -990,6 +860,7 @@
   <span class="mono">AHA Systems · AHA_Accounting</span> — محاسبة، أتمتة، ثقة · جميع الحقوق محفوظة © 2026
 </footer>
 
+<script src="apps-config.js"></script>
 <script>
 /* ============================================================
    طبقة تفاعلية بصرية فقط (Odoo-like) — لا تُعدّل أي محتوى أو أداة،
@@ -997,6 +868,50 @@
    ============================================================ */
 (function () {
   "use strict";
+
+  // 0) رندر بطاقات الأدوات ديناميكياً من apps-config.js
+  //    (لتفعيل/إضافة أداة عدّل apps-config.js فقط، لا حاجة لهذا الملف أبداً)
+  var STATUS_MAP = {
+    ready:   { cardClass: '', statusClass: 'is-ready', statusText: 'جاهزة' },
+    soon:    { cardClass: 'is-disabled', statusClass: 'is-soon', statusText: 'قريباً' },
+    live:    { cardClass: '', statusClass: '', statusText: 'نظام تشغيلي' },
+    service: { cardClass: '', statusClass: '', statusText: 'خدمة' }
+  };
+  var moduleGrid = document.getElementById('moduleGrid');
+  if (moduleGrid && typeof APPS !== 'undefined') {
+    var html = APPS.map(function (app) {
+      var meta = STATUS_MAP[app.status] || STATUS_MAP.soon;
+      var linkHtml = app.link
+        ? '<a href="' + app.link + '" class="module-link">' + app.linkText + '</a>'
+        : '<span class="module-link' + (app.status === 'soon' ? ' disabled' : '') + '">' + app.linkText + '</span>';
+      return (
+        '<div class="module-card ' + meta.cardClass + '" data-category="' + app.category + '" data-name="' + app.name + '">' +
+          '<span class="module-kebab">⋮</span>' +
+          '<div class="module-icon ' + app.tile + '">' + app.icon + '</div>' +
+          '<div class="module-body">' +
+            '<h3>' + app.name + '</h3>' +
+            '<p>' + app.desc + '</p>' +
+            '<div class="module-status-row">' +
+              '<span class="module-status ' + meta.statusClass + '">' + meta.statusText + '</span>' +
+              linkHtml +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+    moduleGrid.innerHTML = html;
+
+    var counts = { all: APPS.length, tools: 0, projects: 0, services: 0 };
+    APPS.forEach(function (app) { if (counts[app.category] !== undefined) counts[app.category]++; });
+    var countAll = document.getElementById('countAll');
+    var countTools = document.getElementById('countTools');
+    var countProjects = document.getElementById('countProjects');
+    var countServices = document.getElementById('countServices');
+    if (countAll) countAll.textContent = counts.all;
+    if (countTools) countTools.textContent = counts.tools;
+    if (countProjects) countProjects.textContent = counts.projects;
+    if (countServices) countServices.textContent = counts.services;
+  }
 
   // 1) شريط تقدم التمرير العلوي
   var progressBar = document.getElementById('scrollProgress');
