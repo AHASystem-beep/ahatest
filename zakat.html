@@ -192,8 +192,8 @@
     </div>
     <div class="row">
       <div class="field"><label>الفضة (جرام)</label><input type="number" id="zSilver" min="0" step="0.01" value="0"></div>
-      <div class="field"><label>سعر غرام الذهب 24 (دولار)</label><input type="number" id="zGoldPrice" min="0" step="0.01" value="65.50"></div>
-      <div class="field"><label>سعر غرام الفضة (دولار)</label><input type="number" id="zSilverPrice" min="0" step="0.01" value="0.76"></div>
+      <div class="field"><label>سعر غرام الذهب 24 (دولار)</label><input type="number" id="zGoldPrice" min="0" step="0.01" value="131.80"></div>
+      <div class="field"><label>سعر غرام الفضة (دولار)</label><input type="number" id="zSilverPrice" min="0" step="0.01" value="1.90"></div>
     </div>
     <div class="price-note">💡 أسعار افتراضية تقريبية — عدّلها يدوياً حسب سعر السوق المحلي يوم إخراج الزكاة.</div>
   </div>
@@ -273,13 +273,19 @@
 </p>
 
 <script>
-function val(id){ return parseFloat(document.getElementById(id).value) || 0; }
-function ival(id){ return parseInt(document.getElementById(id).value) || 0; }
+function normalizeDigits(str){
+  if(!str) return str;
+  const map = {'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9',
+               '۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9'};
+  return String(str).replace(/[٠-٩۰-۹]/g, d => map[d] || d);
+}
+function val(id){ return parseFloat(normalizeDigits(document.getElementById(id).value)) || 0; }
+function ival(id){ return parseInt(normalizeDigits(document.getElementById(id).value)) || 0; }
 function fmt(n){ return n.toLocaleString('en-US', {maximumFractionDigits: 2}); }
 
 function calculateZakat(shouldScroll){
-  const goldPrice = val('zGoldPrice') || 65.50;
-  const silverPrice = val('zSilverPrice') || 0.76;
+  const goldPrice = val('zGoldPrice') || 131.80;
+  const silverPrice = val('zSilverPrice') || 1.90;
 
   const gold24 = val('zGold24'), gold22 = val('zGold22'), gold21 = val('zGold21'), gold18 = val('zGold18');
   const goldGramsEquiv = gold24 + gold22*(22/24) + gold21*(21/24) + gold18*(18/24);
@@ -305,7 +311,10 @@ function calculateZakat(shouldScroll){
   const tradeNisabMet = tradeNet >= goldNisab;
 
   const goldZakat = goldNisabMet ? goldValue * 0.025 : 0;
-  const goldZakatGrams = goldNisabMet ? goldGramsEquiv * 0.025 : 0;
+  const goldZakatGrams24 = goldNisabMet ? gold24 * 0.025 : 0;
+  const goldZakatGrams22 = goldNisabMet ? gold22 * 0.025 : 0;
+  const goldZakatGrams21 = goldNisabMet ? gold21 * 0.025 : 0;
+  const goldZakatGrams18 = goldNisabMet ? gold18 * 0.025 : 0;
   const silverZakat = silverNisabMet ? silverValue * 0.025 : 0;
   const silverZakatGrams = silverNisabMet ? silver * 0.025 : 0;
   const cashZakat = cashNisabMet ? totalCash * 0.025 : 0;
@@ -398,7 +407,13 @@ function calculateZakat(shouldScroll){
     nisabMet, goldNisab, totalWealth, totalZakat,
     combine:{ show: combineOpinion, total: combinedTotal, nisabMet: combinedNisabMet, zakat: combinedZakat, nisab: goldNisab },
     details: {
-      gold:{value:goldValue, zakat:goldZakat, nisab:goldNisab, zakatGrams:goldZakatGrams},
+      gold:{value:goldValue, zakat:goldZakat, nisab:goldNisab,
+        byKarat:[
+          {karat:24, grams:gold24, zakatGrams:goldZakatGrams24},
+          {karat:22, grams:gold22, zakatGrams:goldZakatGrams22},
+          {karat:21, grams:gold21, zakatGrams:goldZakatGrams21},
+          {karat:18, grams:gold18, zakatGrams:goldZakatGrams18}
+        ]},
       silver:{value:silverValue, zakat:silverZakat, nisab:silverNisab, zakatGrams:silverZakatGrams},
       cash:{value:totalCash, zakat:cashZakat},
       trade:{value:tradeNet, zakat:tradeZakat},
@@ -419,10 +434,16 @@ function showSection(id, hasZakat, htmlIfYes, htmlIfNo){
   else { el.innerHTML = htmlIfNo; el.className = 'zk-result no-zakat'; }
 }
 
+function goldGramsSummary(byKarat){
+  const parts = byKarat.filter(k => k.zakatGrams > 0).map(k => `${fmt(k.zakatGrams)} غ (عيار ${k.karat})`);
+  return parts.join(' + ');
+}
+
 function displaySections(d){
   const goldZakat = d.gold.zakat||0, silverZakat = d.silver.zakat||0;
+  const goldGramsText = goldGramsSummary(d.gold.byKarat);
   showSection('resGoldSilver', goldZakat>0 || silverZakat>0,
-    (goldZakat>0? `<span>🥇 زكاة الذهب: <b>${fmt(d.gold.zakatGrams)} غ</b> = <b>$${fmt(goldZakat)}</b></span>`:'') + (silverZakat>0? `<span>🥈 زكاة الفضة: <b>${fmt(d.silver.zakatGrams)} غ</b> = <b>$${fmt(silverZakat)}</b></span>`:''),
+    (goldZakat>0? `<span>🥇 زكاة الذهب: <b>${goldGramsText}</b> = <b>$${fmt(goldZakat)}</b></span>`:'') + (silverZakat>0? `<span>🥈 زكاة الفضة: <b>${fmt(d.silver.zakatGrams)} غ</b> = <b>$${fmt(silverZakat)}</b></span>`:''),
     'لا توجد زكاة واجبة على الذهب أو الفضة (دون النصاب أو القيمة صفر)');
 
   const cashZakat = d.cash.zakat||0, tradeZakat = d.trade.zakat||0;
@@ -444,12 +465,12 @@ function displaySections(d){
     'لا توجد زكاة واجبة على الأنعام (دون النصاب أو العدد صفر)');
 }
 
-function detailRow(name, value, zakat, nisab, unit, zakatGrams){
+function detailRow(name, value, zakat, nisab, unit, zakatGramsText){
   unit = unit || '$';
   const prefix = unit === '$' ? '$' : '';
   const suffix = unit === '$' ? '' : ' ' + unit;
-  const zakatDisplay = (zakatGrams !== undefined && zakatGrams > 0)
-    ? `${fmt(zakatGrams)} غ = ${prefix}${fmt(zakat)}${suffix}`
+  const zakatDisplay = zakatGramsText
+    ? `${zakatGramsText} = ${prefix}${fmt(zakat)}${suffix}`
     : `${prefix}${fmt(zakat)}${suffix}`;
   return `<div class="detail-row">
     <span class="name">${name}</span>
@@ -478,8 +499,8 @@ function displayResults(results, shouldScroll){
 
   const d = results.details;
   let html = '';
-  if(d.gold.value>0) html += detailRow('💰 الذهب', d.gold.value, d.gold.zakat, d.gold.nisab, '$', d.gold.zakatGrams);
-  if(d.silver.value>0) html += detailRow('🥈 الفضة', d.silver.value, d.silver.zakat, d.silver.nisab, '$', d.silver.zakatGrams);
+  if(d.gold.value>0) html += detailRow('💰 الذهب', d.gold.value, d.gold.zakat, d.gold.nisab, '$', goldGramsSummary(d.gold.byKarat));
+  if(d.silver.value>0) html += detailRow('🥈 الفضة', d.silver.value, d.silver.zakat, d.silver.nisab, '$', d.silver.zakatGrams > 0 ? `${fmt(d.silver.zakatGrams)} غ` : '');
   if(d.cash.value>0) html += detailRow('💵 النقود', d.cash.value, d.cash.zakat, results.goldNisab);
   if(d.trade.value>0) html += detailRow('🏪 التجارة', d.trade.value, d.trade.zakat, results.goldNisab);
   if(d.crops.value>0) html += detailRow('🌾 الزروع', d.crops.value, d.crops.zakat, d.crops.nisab, 'كجم');
