@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولّد السيرة الذاتية — AHA Systems | AHA_Accounting</title>
+<meta name="description" content="أنشئ سيرة ذاتية احترافية وعصرية مجاناً خلال دقائق — AHA Systems / AHA_Accounting">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&family=Inter:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #F7F8F5;
+    --surface: #FFFFFF;
+    --ink: #1C231F;
+    --ink-soft: #566058;
+    --forest: #0F2A4A;
+    --sheet-green: #2E6BA4;
+    --sheet-green-soft: #E7EFF6;
+    --leaf: #4B9A57;
+    --border: #E3E5E0;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.04);
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  body{
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Cairo', sans-serif;
+    line-height: 1.6;
+    padding: 30px 15px;
+  }
+
+  .container{
+    max-width: 1360px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+  }
+
+  /* لوحة التحكم والتحرير */
+  .editor-panel{
+    flex: 1;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  /* صندوق تحويل اللغة الجديد */
+  .lang-box {
+    background: var(--sheet-green-soft);
+    padding: 15px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 25px;
+    border: 1px solid rgba(46, 107, 164, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .lang-label {
+    font-weight: 700;
+    color: var(--forest);
+    font-size: 0.95rem;
+  }
+  .lang-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-lang {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    transition: var(--transition);
+  }
+  .btn-lang.active {
+    background: var(--sheet-green);
+    color: #fff;
+    border-color: var(--sheet-green);
+  }
+
+  .panel-title{
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 900;
+    color: var(--forest);
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--sheet-green-soft);
+    padding-bottom: 12px;
+  }
+
+  .section-card{
+    background: #FAFAF9;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .section-card-title{
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--forest);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+  }
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group.full-width{ grid-column: 1 / -1; }
+  
+  label{
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+  input, textarea{
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: var(--transition);
+  }
+  input:focus, textarea:focus{
+    outline: none;
+    border-color: var(--sheet-green);
+    box-shadow: 0 0 0 3px var(--sheet-green-soft);
+  }
+
+  .repeater-item{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .btn-remove{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #FEE2E2;
+    color: #EF4444;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .btn-add-item{
+    background: transparent;
+    color: var(--sheet-green);
+    border: 1px dashed var(--sheet-green);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+    transition: var(--transition);
+  }
+  .btn-add-item:hover{ background: var(--sheet-green-soft); }
+
+  .btn-action-trigger{
+    background: var(--forest);
+    color: #FFFFFF;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    border-radius: var(--radius-sm);
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
+    transition: var(--transition);
+  }
+  .btn-action-trigger:hover{ background: var(--sheet-green); transform: translateY(-1px); }
+
+  /* لوحة المعاينة الحية */
+  .preview-panel{
+    width: 210mm;
+    min-width: 210mm;
+    position: sticky;
+    top: 30px;
+  }
+  .sheet-frame{
+    width: 210mm;
+    height: 297mm;
+    background: #FFFFFF;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    display: flex;
+    overflow: hidden;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+  }
+
+  /* دعم اللغتين للمعاينة */
+  .cv-rtl { direction: rtl; text-align: right; font-family: 'Cairo', sans-serif; }
+  .cv-ltr { direction: ltr; text-align: left; font-family: 'Inter', sans-serif; }
+
+  .cv-aside{
+    width: 72mm;
+    background-color: var(--forest);
+    color: #FFFFFF;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .profile-block{ text-align: center; }
+  .avatar-space{
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    margin: 0 auto 15px auto;
+    border: 2px solid rgba(255,255,255,0.2);
+    overflow: hidden;
+  }
+  .avatar-space img{ width: 100%; height: 100%; object-fit: cover; }
+
+  .aside-section-title{
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    color: var(--sheet-green-soft);
+  }
+  .meta-list{ display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem; }
+  .meta-list p{ word-break: break-all; opacity: 0.9; }
+  .meta-list strong{ display: block; color: #FFF; font-size: 0.85rem; margin-bottom: 2px; }
+
+  .tags-shelf{ display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag-node{ background: rgba(255,255,255,0.08); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
+
+  .cv-body{
+    width: 138mm;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .hero-block{ border-bottom: 2px solid var(--sheet-green-soft); padding-bottom: 20px; }
+  .fullname-output{ font-family: 'Tajawal', sans-serif; font-size: 2rem; font-weight: 900; color: var(--forest); line-height: 1.2; }
+  .jobtitle-output{ font-size: 1.1rem; font-weight: 600; color: var(--sheet-green); margin-top: 4px; }
+
+  .body-section-title{
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--forest);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+    margin-bottom: 12px;
+  }
+  .summary-text{ font-size: 0.85rem; color: var(--ink-soft); text-align: justify; }
+
+  .timeline-flow{ display: flex; flex-direction: column; gap: 14px; }
+  .timeline-card{ position: relative; }
+  .timeline-meta{ display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--ink); }
+  .timeline-sub{ display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--sheet-green); font-weight: 600; margin: 2px 0 5px 0; }
+  .timeline-desc{ font-size: 0.8rem; color: var(--ink-soft); white-space: pre-line; }
+
+  @media(max-width: 1180px){
+    .container{ flex-direction: column; align-items: center; }
+    .editor-panel{ width: 100%; }
+    .preview-panel{ width: 100%; overflow-x: auto; position: static; }
+  }
+
+  /* تنسيق الطباعة: يعتمد على محرك عرض المتصفح الحقيقي بدل html2canvas
+     لضمان رسم النص العربي المتصل وترتيب RTL بشكل صحيح 100% */
+  @media print{
+    @page{ size: A4 portrait; margin: 0; }
+
+    /* إجبار طباعة الألوان والخلفيات — بدون هذا يختفي الشريط الجانبي الكحلي بالكامل
+       لأن المتصفحات تُسقط ألوان الخلفية افتراضياً عند الطباعة */
+    *{
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    html, body{
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #fff !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden !important;
+    }
+
+    /* إزالة كل شيء من تدفق الصفحة تماماً (وليس إخفاءه بصرياً فقط)
+       لتفادي حجز مساحة فارغة تسبب صفحة ثانية بيضاء وقصّ المحتوى */
+    .editor-panel, .lang-box{ display: none !important; }
+
+    .container{
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      gap: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    .preview-panel{
+      position: static !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* قياسات نسبية (% / vh) بدل mm الثابتة — هذا يضمن ملء الورقة تماماً
+       مهما كان حجمها الفعلي المختار في نافذة الطباعة (A4 أو Letter أو غيره)،
+       فلا يحدث أي انزياح أو قصّ للمحتوى */
+    .sheet-frame{
+      width: 100% !important;
+      height: 100vh !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      page-break-after: avoid !important;
+      page-break-inside: avoid !important;
+    }
+
+    .cv-aside{
+      width: 34.3% !important; /* يعادل 72mm من أصل 210mm بشكل نسبي */
+    }
+
+    .cv-body{
+      width: 65.7% !important; /* يعادل 138mm من أصل 210mm بشكل نسبي */
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="editor-panel">
+    
+    <div class="lang-box">
+      <span class="lang-label">لغة مستند السيرة الذاتية (ترجمة ذكية):</span>
+      <div class="lang-buttons">
+        <button class="btn-lang active" id="btn-ar" onclick="toggleLanguage('ar')">العربية</button>
+        <button class="btn-lang" id="btn-en" onclick="toggleLanguage('en')">English (مترجم)</button>
+      </div>
+    </div>
+
+    <h2 class="panel-title">منشئ السيرة الذاتية الاحترافي</h2>
+    
+    <div class="section-card">
+      <h3 class="section-card-title">المعلومات الشخصية</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>الصورة الشخصية</label><input type="file" accept="image/*" onchange="loadAvatar(this)"></div>
+        <div class="form-group"><label>الاسم الكامل</label><input type="text" id="in-name" value="" oninput="syncData()"></div>
+        <div class="form-group"><label>المسمى الوظيفي</label><input type="text" id="in-title" value="" oninput="syncData()"></div>
+        <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="in-email" value="" oninput="syncData()"></div>
+        <div class="form-group"><label>رقم الهاتف</label><input type="text" id="in-phone" value="" oninput="syncData()"></div>
+        <div class="form-group"><label>العمر / الملاحظات</label><input type="text" id="in-age" value="" oninput="syncData()"></div>
+        <div class="form-group full-width"><label>المهارات الفردية (افصل بينها بفاصلة ,)</label><input type="text" id="in-skills" value="" oninput="syncData()"></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3 class="section-card-title">الملخص المهني</h3>
+      <div class="form-group"><textarea id="in-summary" rows="3" oninput="syncData()">محاسب مالي ذو خبرة طويلة ومميزة في إعداد القوائم المالية الشاملة، إدارة الحسابات، والتحليل المالي الدقيق وتطوير النظم المحاسبية للشركات بما يضمن الكفاءة والنمو.</textarea></div>
+    </div>
+
+    <div class="section-card">
+      <h3 class="section-card-title">الخبرات المهنية</h3>
+      <div id="editor-exp-list"></div>
+      <button class="btn-add-item" onclick="pushItem('exp')">+ إضافة خبرة عمل</button>
+    </div>
+
+    <div class="section-card">
+      <h3 class="section-card-title">التعليم والشهادات</h3>
+      <div id="editor-edu-list"></div>
+      <button class="btn-add-item" onclick="pushItem('edu')">+ إضافة مؤهل دراسي</button>
+    </div>
+
+    <button class="btn-action-trigger" id="download-btn" onclick="exportPDF()">تصدير وتحميل ملف PDF</button>
+  </div>
+
+  <div class="preview-panel">
+    <div class="sheet-frame cv-rtl" id="cv-frame-target">
+      
+      <div class="cv-aside">
+        <div class="profile-block">
+          <div class="avatar-space"><img id="cv-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' opacity='0.3'><path d='M12 12c2.21 0 4-1.79 4-4s1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>"></div>
+        </div>
+        
+        <div>
+          <h3 class="aside-section-title" id="lbl-contact">الاتصال والتواصل</h3>
+          <div class="meta-list">
+            <p><strong id="lbl-phone">الهاتف</strong><span id="cv-phone"></span></p>
+            <p><strong id="lbl-email">البريد الإلكتروني</strong><span id="cv-email"></span></p>
+            <p><strong id="lbl-age">العمر</strong><span id="cv-age"></span></p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="aside-section-title" id="lbl-skills">المهارات الفردية</h3>
+          <div class="tags-shelf" id="cv-skills"></div>
+        </div>
+      </div>
+
+      <div class="cv-body">
+        <div class="hero-block">
+          <h1 class="fullname-output" id="cv-name"></h1>
+          <p class="jobtitle-output" id="cv-title"></p>
+        </div>
+
+        <div>
+          <h3 class="body-section-title" id="lbl-summary">الملخص المهني</h3>
+          <p class="summary-text" id="cv-summary"></p>
+        </div>
+
+        <div>
+          <h3 class="body-section-title" id="lbl-exp">الخبرات المهنية</h3>
+          <div class="timeline-flow" id="cv-exp-flow"></div>
+        </div>
+
+        <div>
+          <h3 class="body-section-title" id="lbl-edu">التعليم والشهادات</h3>
+          <div class="timeline-flow" id="cv-edu-flow"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+let activeLang = 'ar';
+
+// قاعدة البيانات الأساسية باللغة العربية
+let storeAr = {
+  name: "",
+  title: "",
+  email: "",
+  phone: "",
+  age: "",
+  skills: "",
+  summary: "محاسب مالي ذو خبرة طويلة ومميزة في إعداد القوائم المالية الشاملة، إدارة الحسابات، والتحليل المالي الدقيق وتطوير النظم المحاسبية للشركات بما يضمن الكفاءة والنمو.",
+  experiences: [
+    { role: "", company: "", period: "", desc: "" }
+  ],
+  education: [
+    { degree: "", institute: "جامعة دمشق", period: "" }
+  ]
+};
+
+// نسخة التخزين للغة الانجليزية المترجمة
+let storeEn = JSON.parse(JSON.stringify(storeAr));
+
+// العناوين الثابتة للنظام
+const dictionary = {
+  ar: { contact: "الاتصال والتواصل", phone: "الهاتف", email: "البريد الإلكتروني", age: "العمر", skills: "المهارات الفردية", summary: "الملخص المهني", exp: "الخبرات المهنية", edu: "التعليم والشهادات" },
+  en: { contact: "Contact Info", phone: "Phone", email: "Email Address", age: "Age / Status", skills: "Core Skills", summary: "Professional Summary", exp: "Work Experience", edu: "Education & Credentials" }
+};
+
+function syncData() {
+  const target = activeLang === 'ar' ? storeAr : storeEn;
+  target.name = document.getElementById('in-name').value;
+  target.title = document.getElementById('in-title').value;
+  target.email = document.getElementById('in-email').value;
+  target.phone = document.getElementById('in-phone').value;
+  target.age = document.getElementById('in-age').value;
+  target.skills = document.getElementById('in-skills').value;
+  target.summary = document.getElementById('in-summary').value;
+  renderCV();
+}
+
+function loadAvatar(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => document.getElementById('cv-avatar').src = e.target.result;
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function pushItem(type) {
+  const target = activeLang === 'ar' ? storeAr : storeEn;
+  if(type === 'exp') {
+    target.experiences.push({ role: "المسمى الوظيفي", company: "الشركة", period: "الفترة الزمنية", desc: "شرح المهام..." });
+  } else {
+    target.education.push({ degree: "الشهادة / المؤهل", institute: "الجامعة أو المعهد", period: "التاريخ" });
+  }
+  renderEditorLists();
+  renderCV();
+}
+
+function dropItem(type, index) {
+  const target = activeLang === 'ar' ? storeAr : storeEn;
+  if(type === 'exp') target.experiences.splice(index, 1);
+  else target.education.splice(index, 1);
+  renderEditorLists();
+  renderCV();
+}
+
+function mutateItem(type, index, key, val) {
+  const target = activeLang === 'ar' ? storeAr : storeEn;
+  if(type === 'exp') target.experiences[index][key] = val;
+  else target.education[index][key] = val;
+  renderCV();
+}
+
+function renderEditorLists() {
+  const target = activeLang === 'ar' ? storeAr : storeEn;
+  
+  // رندرة الخبرات
+  const expBox = document.getElementById('editor-exp-list');
+  expBox.innerHTML = '';
+  target.experiences.forEach((item, idx) => {
+    expBox.innerHTML += `
+      <div class="repeater-item">
+        <button class="btn-remove" onclick="dropItem('exp', ${idx})">حذف</button>
+        <div class="form-grid" style="margin-top:15px;">
+          <div class="form-group"><label>الدور الوظيفي</label><input type="text" value="${item.role}" oninput="mutateItem('exp', ${idx}, 'role', this.value)"></div>
+          <div class="form-group"><label>الشركة / المنظمة</label><input type="text" value="${item.company}" oninput="mutateItem('exp', ${idx}, 'company', this.value)"></div>
+          <div class="form-group"><label>الفترة</label><input type="text" value="${item.period}" oninput="mutateItem('exp', ${idx}, 'period', this.value)"></div>
+          <div class="form-group full-width"><label>الوصف والإنجازات</label><textarea rows="2" oninput="mutateItem('exp', ${idx}, 'desc', this.value)">${item.desc}</textarea></div>
+        </div>
+      </div>
+    `;
+  });
+
+  // رندرة التعليم
+  const eduBox = document.getElementById('editor-edu-list');
+  eduBox.innerHTML = '';
+  target.education.forEach((item, idx) => {
+    eduBox.innerHTML += `
+      <div class="repeater-item">
+        <button class="btn-remove" onclick="dropItem('edu', ${idx})">حذف</button>
+        <div class="form-grid" style="margin-top:15px;">
+          <div class="form-group"><label>المؤهل / التخصص</label><input type="text" value="${item.degree}" oninput="mutateItem('edu', ${idx}, 'degree', this.value)"></div>
+          <div class="form-group"><label>الجهة / الجامعة</label><input type="text" value="${item.institute}" oninput="mutateItem('edu', ${idx}, 'institute', this.value)"></div>
+          <div class="form-group"><label>التاريخ / السنة</label><input type="text" value="${item.period}" oninput="mutateItem('edu', ${idx}, 'period', this.value)"></div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// دالة الاتصال الفوري بـ API الترجمة المجاني الذكي
+async function cloudTranslate(text) {
+  if (!text || !text.trim()) return "";
+  try {
+    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(text)}`);
+    const data = await res.json();
+    return data[0].map(s => s[0]).join('');
+  } catch (err) {
+    console.error("Translation Fallback triggered", err);
+    return text; 
+  }
+}
+
+// دالة معالجة التبديل بين اللغتين بالكامل وقلب التنسيق للطباعة
+async function toggleLanguage(lang) {
+  activeLang = lang;
+  
+  document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  
+  const frame = document.getElementById('cv-frame-target');
+  
+  if (lang === 'en') {
+    document.getElementById('btn-en').textContent = "جاري الترجمة الفورية...";
+    
+    // قلب التنسيق إلى نظام اليسار لليمين ونوع الخط
+    frame.classList.remove('cv-rtl');
+    frame.classList.add('cv-ltr');
+    
+    // ترجمة البيانات الحرة والكتل النصية
+    storeEn.name = await cloudTranslate(storeAr.name);
+    storeEn.title = await cloudTranslate(storeAr.title);
+    storeEn.email = storeAr.email;
+    storeEn.phone = storeAr.phone;
+    storeEn.age = await cloudTranslate(storeAr.age);
+    storeEn.skills = await cloudTranslate(storeAr.skills);
+    storeEn.summary = await cloudTranslate(storeAr.summary);
+    
+    // ترجمة الخبرات التكرارية
+    for(let i=0; i < storeAr.experiences.length; i++) {
+      storeEn.experiences[i].role = await cloudTranslate(storeAr.experiences[i].role);
+      storeEn.experiences[i].company = await cloudTranslate(storeAr.experiences[i].company);
+      storeEn.experiences[i].period = await cloudTranslate(storeAr.experiences[i].period);
+      storeEn.experiences[i].desc = await cloudTranslate(storeAr.experiences[i].desc);
+    }
+    
+    // ترجمة حقول التعليم
+    for(let i=0; i < storeAr.education.length; i++) {
+      storeEn.education[i].degree = await cloudTranslate(storeAr.education[i].degree);
+      storeEn.education[i].institute = await cloudTranslate(storeAr.education[i].institute);
+      storeEn.education[i].period = await cloudTranslate(storeAr.education[i].period);
+    }
+    
+    document.getElementById('btn-en').textContent = "English (مترجم)";
+    
+    // ملء حقول لوحة التحرير بالترجمة الانجليزية المكتشفة
+    document.getElementById('in-name').value = storeEn.name;
+    document.getElementById('in-title').value = storeEn.title;
+    document.getElementById('in-age').value = storeEn.age;
+    document.getElementById('in-skills').value = storeEn.skills;
+    document.getElementById('in-summary').value = storeEn.summary;
+  } else {
+    // إعادة التنسيق للنظام العربي الطبيعي
+    frame.classList.remove('cv-ltr');
+    frame.classList.add('cv-rtl');
+    
+    document.getElementById('in-name').value = storeAr.name;
+    document.getElementById('in-title').value = storeAr.title;
+    document.getElementById('in-email').value = storeAr.email;
+    document.getElementById('in-phone').value = storeAr.phone;
+    document.getElementById('in-age').value = storeAr.age;
+    document.getElementById('in-skills').value = storeAr.skills;
+    document.getElementById('in-summary').value = storeAr.summary;
+  }
+  
+  renderEditorLists();
+  renderCV();
+}
+
+function renderCV() {
+  const source = activeLang === 'ar' ? storeAr : storeEn;
+  const labels = dictionary[activeLang];
+
+  // مزامنة المسميات الثابتة
+  document.getElementById('lbl-contact').textContent = labels.contact;
+  document.getElementById('lbl-phone').textContent = labels.phone;
+  document.getElementById('lbl-email').textContent = labels.email;
+  document.getElementById('lbl-age').textContent = labels.age;
+  document.getElementById('lbl-skills').textContent = labels.skills;
+  document.getElementById('lbl-summary').textContent = labels.summary;
+  document.getElementById('lbl-exp').textContent = labels.exp;
+  document.getElementById('lbl-edu').textContent = labels.edu;
+
+  // مزامنة البيانات الأساسية
+  document.getElementById('cv-name').textContent = source.name;
+  document.getElementById('cv-title').textContent = source.title;
+  document.getElementById('cv-phone').textContent = source.phone;
+  document.getElementById('cv-email').textContent = source.email;
+  document.getElementById('cv-age').textContent = source.age;
+  document.getElementById('cv-summary').textContent = source.summary;
+
+  // المهارات
+  const skillsBox = document.getElementById('cv-skills');
+  skillsBox.innerHTML = '';
+  if(source.skills) {
+    source.skills.split(',').forEach(s => {
+      if(s.trim()) skillsBox.innerHTML += `<span class="tag-node">${s.trim()}</span>`;
+    });
+  }
+
+  // الخبرات
+  const expFlow = document.getElementById('cv-exp-flow');
+  expFlow.innerHTML = '';
+  source.experiences.forEach(item => {
+    expFlow.innerHTML += `
+      <div class="timeline-card">
+        <div class="timeline-meta"><span>${item.role}</span><span>${item.period}</span></div>
+        <div class="timeline-sub"><span>${item.company}</span></div>
+        <p class="timeline-desc">${item.desc || ''}</p>
+      </div>
+    `;
+  });
+
+  // التعليم
+  const eduFlow = document.getElementById('cv-edu-flow');
+  eduFlow.innerHTML = '';
+  source.education.forEach(item => {
+    eduFlow.innerHTML += `
+      <div class="timeline-card">
+        <div class="timeline-meta"><span>${item.degree}</span><span>${item.period}</span></div>
+        <div class="timeline-sub"><span>${item.institute}</span></div>
+      </div>
+    `;
+  });
+}
+
+// دالة تصدير الـ PDF — تعتمد الآن على الطباعة الأصلية للمتصفح (window.print)
+// بدل html2canvas، لأن html2canvas غير قادر على رسم النص العربي المتصل
+// وتخطيطات RTL بشكل صحيح مهما ضُبطت إعداداته (مشكلة موثقة في المكتبة نفسها).
+// الطباعة الأصلية تستخدم نفس محرك المتصفح الذي يعرض المعاينة بشكل سليم تمامًا،
+// فتكون نتيجة PDF مطابقة 100% لما تراه على الشاشة.
+function exportPDF() {
+  alert(activeLang === 'ar'
+    ? 'ستُفتح نافذة الطباعة الآن. من قائمة "الوجهة/Destination" اختر "حفظ كـ PDF" (Save as PDF) ثم اضغط حفظ.'
+    : 'The print dialog will open now. From the "Destination" list choose "Save as PDF", then click Save.');
+  window.print();
+}
+
+// الإقلاع الأولي للنظام المطور
+renderEditorLists();
+renderCV();
+</script>
+
+</body>
+</html>
+
