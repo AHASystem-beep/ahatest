@@ -47,8 +47,13 @@ const APPS = [
   },
   {
     category: 'tools', name: 'مولّد الفواتير', icon: '🧾', tile: 'tile-c4',
-    desc: 'أنشئ فاتورة احترافية جاهزة للطباعة خلال ثوانٍ، لأصحاب المحال والمشاريع الصغيرة.',
-    status: 'soon', link: null, linkText: 'قريباً ←'
+    desc: 'أنشئ فاتورة احترافية جاهزة للطباعة خلال ثوانٍ، مع شعار شركتك، ضريبة القيمة المضافة، والمبلغ كتابةً تلقائيًا.',
+    status: 'ready', link: 'invoice.html', linkText: 'افتح الأداة ←'
+  },
+  {
+    category: 'tools', name: 'حاسبة تسوية ضريبة القيمة المضافة', icon: '📊', tile: 'tile-c6',
+    desc: 'أداة تعليمية مجانية لحساب ضريبة المخرجات والمدخلات، وتحديد الضريبة المستحقة أو المستردة، مع شرح القيود المحاسبية بالتفصيل.',
+    status: 'ready', link: 'vat-settlement.html', linkText: 'افتح الأداة ←'
   },
   {
     category: 'projects', name: 'CredNote — مفكرة الائتمان', icon: '💳', tile: 'tile-c5',
