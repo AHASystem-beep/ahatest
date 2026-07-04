@@ -41,11 +41,6 @@ const APPS = [
     status: 'ready', link: 'zakat.html', linkText: 'افتح الأداة ←'
   },
   {
-    category: 'tools', name: 'مولّد حالات واتساب وانستا', icon: '📱', tile: 'tile-c3',
-    desc: 'صمّم صورة جاهزة للمشاركة: خلفيات دينية احترافية جاهزة، أو معلومة محاسبية وترفيهية متجددة — بضغطة واحدة.',
-    status: 'ready', link: 'status.html', linkText: 'افتح الأداة ←'
-  },
-  {
     category: 'tools', name: 'مولّد الفواتير', icon: '🧾', tile: 'tile-c4',
     desc: 'أنشئ فاتورة احترافية جاهزة للطباعة خلال ثوانٍ، مع شعار شركتك، ضريبة القيمة المضافة، والمبلغ كتابةً تلقائيًا.',
     status: 'ready', link: 'invoice.html', linkText: 'افتح الأداة ←'
