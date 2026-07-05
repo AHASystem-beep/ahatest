@@ -61,6 +61,11 @@ const APPS = [
     status: 'live', link: 'selfa.html', linkText: 'تفاصيل ومراسلة ←'
   },
   {
+    category: 'projects', name: 'نظام الكاشير بالباركود', icon: '🧾', tile: 'tile-c3',
+    desc: 'مسح باركود فوري بكاميرا الموبايل عبر بوت تيليغرام وميني آب، يكتب مباشرة على شيت الفاتورة — بدعم عدة عملاء (Multi-tenant). نظام مدفوع — تواصل للسعر.',
+    status: 'live', link: 'cashier.html', linkText: 'تفاصيل ومراسلة ←'
+  },
+  {
     category: 'projects', name: 'إدارة ورشات PVC', icon: '🚪', tile: 'tile-c4',
     desc: 'نظام جوجل شيت لإدارة ورشات تجميع وتشكيل أبواب وواجهات PVC، من متابعة الإنتاج إلى الجاهزية للتسليم.',
     status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
