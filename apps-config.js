@@ -8,7 +8,8 @@
    ------------------------------------------------------------
    هذا الملف هو المكان الوحيد الذي تحتاج تعديله لتفعيل أو إضافة
    أداة جديدة في لوحة AHA Systems. لا حاجة لفتح أو تعديل index.html
-   أبداً بعد اليوم.
+   أبداً بعد اليوم (التصنيفات نفسها معرّفة مرة واحدة في index.html
+   ولا تحتاج تعديلها إلا عند إضافة تصنيف جديد بالكامل غير الستة الحالية).
 
    لتفعيل أداة "قريباً":
      1) غيّر status من 'soon' إلى 'ready'
@@ -19,7 +20,9 @@
      - انسخ أي عنصر من مصفوفة APPS وعدّل قيمه، وأضفه للمصفوفة.
 
    حقول كل أداة:
-     category   : 'tools' | 'projects' | 'services'
+     category   : 'tools' (أدوات مجانية) | 'business' (أدوات الأعمال)
+                | 'systems' (أنظمة التشغيل) | 'ai' (أدوات الذكاء الاصطناعي)
+                | 'templates' (القوالب) | 'services' (خدمات وتدريب)
      name       : اسم الأداة (يُستخدم أيضاً في البحث)
      icon       : إيموجي الأيقونة
      tile       : لون الأيقونة (tile-c1 إلى tile-c6)
@@ -30,6 +33,7 @@
    ============================================================ */
 
 const APPS = [
+  // ===== 1) أدوات مجانية =====
   {
     category: 'tools', name: 'مولّد السيرة الذاتية', icon: '📄', tile: 'tile-c1',
     desc: 'املأ بياناتك الأساسية واحصل على سيرة ذاتية احترافية وحديثة، جاهزة للطباعة أو التحميل كـ PDF مباشرة.',
@@ -50,39 +54,47 @@ const APPS = [
     desc: 'أداة تعليمية مجانية لحساب ضريبة المخرجات والمدخلات، وتحديد الضريبة المستحقة أو المستردة، مع شرح القيود المحاسبية بالتفصيل.',
     status: 'ready', link: 'vat-settlement.html', linkText: 'افتح الأداة ←'
   },
+
+  // ===== 2) أدوات الأعمال =====
   {
-    category: 'projects', name: 'CredNote — مفكرة الائتمان', icon: '💳', tile: 'tile-c5',
+    category: 'business', name: 'CredNote — مفكرة الائتمان', icon: '💳', tile: 'tile-c5',
     desc: 'بوت وتطبيق ويب لإدارة الديون والائتمان للتجار، مع حاسبة زكاة مدمجة.',
     status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
   },
   {
-    category: 'projects', name: 'نظام سلفة', icon: '💰', tile: 'tile-c6',
+    category: 'business', name: 'نظام سلفة', icon: '💰', tile: 'tile-c6',
     desc: 'تطبيق Telegram Mini App لإدارة سلف المشاريع لعدة عملاء (Multi-tenant) بمزامنة كاملة مع جوجل شيت.',
     status: 'live', link: 'selfa.html', linkText: 'تفاصيل ومراسلة ←'
   },
   {
-    category: 'projects', name: 'نظام الكاشير بالباركود', icon: '🧾', tile: 'tile-c3',
+    category: 'business', name: 'CashOnHand — يومية الصندوق الذكية', icon: '💵', tile: 'tile-c2',
+    desc: 'دفتر يومية صندوق ذكي ومؤتمت بالكامل عبر بوت تيليغرام وجوجل شيت، بدون إدخال يدوي معقّد.',
+    status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
+  },
+
+  // ===== 3) أنظمة التشغيل =====
+  {
+    category: 'systems', name: 'نظام الكاشير بالباركود', icon: '🧾', tile: 'tile-c3',
     desc: 'مسح باركود فوري بكاميرا الموبايل عبر بوت تيليغرام وميني آب، يكتب مباشرة على شيت الفاتورة — بدعم عدة عملاء (Multi-tenant). نظام مدفوع — تواصل للسعر.',
     status: 'live', link: 'cashier.html', linkText: 'تفاصيل ومراسلة ←'
   },
   {
-    category: 'projects', name: 'إدارة ورشات PVC', icon: '🚪', tile: 'tile-c4',
+    category: 'systems', name: 'إدارة ورشات PVC', icon: '🚪', tile: 'tile-c4',
     desc: 'نظام جوجل شيت لإدارة ورشات تجميع وتشكيل أبواب وواجهات PVC، من متابعة الإنتاج إلى الجاهزية للتسليم.',
     status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
   },
   {
-    category: 'projects', name: 'RIS — نظام مراكز الأشعة', icon: '🩻', tile: 'tile-c1',
+    category: 'systems', name: 'RIS — نظام مراكز الأشعة', icon: '🩻', tile: 'tile-c1',
     desc: 'نظام إدارة كامل لمراكز الأشعة، مربوط ببوت تيليغرام بذكاء اصطناعي يجاوب مباشرة من بيانات النظام.',
     status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
-  },
-  {
-    category: 'projects', name: 'CashOnHand — يومية الصندوق الذكية', icon: '💵', tile: 'tile-c2',
-    desc: 'دفتر يومية صندوق ذكي ومؤتمت بالكامل عبر بوت تيليغرام وجوجل شيت، بدون إدخال يدوي معقّد.',
-    status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
-  },
-  {
-    category: 'services', name: 'برنامج X-per', icon: '🎓', tile: 'tile-c3',
-    desc: 'نقدّم خدمة تجهيز وتدريب على برنامج المحاسبة X-per — نظام ERP سحابي معتمد في السوق العربية والدولية.',
-    status: 'service', link: null, linkText: 'استفسر عن الخدمة ←'
   }
+
+  // ===== 4) أدوات الذكاء الاصطناعي — فارغ حالياً، سيُضاف لاحقاً =====
+  // { category: 'ai', name: '...', icon: '🤖', tile: 'tile-c?', desc: '...', status: '...', link: '...', linkText: '...' },
+
+  // ===== 5) القوالب — فارغ حالياً، سيُضاف لاحقاً =====
+  // { category: 'templates', name: '...', icon: '📐', tile: 'tile-c?', desc: '...', status: '...', link: '...', linkText: '...' },
+
+  // ===== 6) خدمات وتدريب — فارغ حالياً، سيُضاف لاحقاً =====
+  // { category: 'services', name: '...', icon: '🎓', tile: 'tile-c?', desc: '...', status: '...', link: '...', linkText: '...' },
 ];

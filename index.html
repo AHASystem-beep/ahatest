@@ -779,8 +779,11 @@
       <div class="cat-label">التصنيفات</div>
       <button type="button" class="dashboard-cat active" data-filter="all">الكل <span class="count" id="countAll">10</span></button>
       <button type="button" class="dashboard-cat" data-filter="tools">أدوات مجانية <span class="count" id="countTools">4</span></button>
-      <button type="button" class="dashboard-cat" data-filter="projects">أنظمة ومشاريع <span class="count" id="countProjects">5</span></button>
-      <button type="button" class="dashboard-cat" data-filter="services">خدمات وتدريب <span class="count" id="countServices">1</span></button>
+      <button type="button" class="dashboard-cat" data-filter="business">أدوات الأعمال <span class="count" id="countBusiness">3</span></button>
+      <button type="button" class="dashboard-cat" data-filter="systems">أنظمة التشغيل <span class="count" id="countSystems">3</span></button>
+      <button type="button" class="dashboard-cat" data-filter="ai">أدوات الذكاء الاصطناعي <span class="count" id="countAi">0</span></button>
+      <button type="button" class="dashboard-cat" data-filter="templates">القوالب <span class="count" id="countTemplates">0</span></button>
+      <button type="button" class="dashboard-cat" data-filter="services">خدمات وتدريب <span class="count" id="countServices">0</span></button>
     </aside>
 
     <div>
@@ -816,7 +819,7 @@
       <h3>أغيد حج حمد</h3>
       <ul>
         <li><span>الاختصاص</span><span class="mono">Accounting</span></li>
-        <li><span>الخبرة الميدانية</span><span class="mono">10 Years</span></li>
+        <li><span>الخبرة الميدانية</span><span class="mono">7 Years</span></li>
         <li><span>المنطقة</span><span class="mono">Aleppo / Azaz</span></li>
         <li><span>الأدوات</span><span class="mono">Sheets · Apps Script</span></li>
       </ul>
@@ -907,15 +910,21 @@
     }).join('');
     moduleGrid.innerHTML = html;
 
-    var counts = { all: APPS.length, tools: 0, projects: 0, services: 0 };
+    var counts = { all: APPS.length, tools: 0, business: 0, systems: 0, ai: 0, templates: 0, services: 0 };
     APPS.forEach(function (app) { if (counts[app.category] !== undefined) counts[app.category]++; });
     var countAll = document.getElementById('countAll');
     var countTools = document.getElementById('countTools');
-    var countProjects = document.getElementById('countProjects');
+    var countBusiness = document.getElementById('countBusiness');
+    var countSystems = document.getElementById('countSystems');
+    var countAi = document.getElementById('countAi');
+    var countTemplates = document.getElementById('countTemplates');
     var countServices = document.getElementById('countServices');
     if (countAll) countAll.textContent = counts.all;
     if (countTools) countTools.textContent = counts.tools;
-    if (countProjects) countProjects.textContent = counts.projects;
+    if (countBusiness) countBusiness.textContent = counts.business;
+    if (countSystems) countSystems.textContent = counts.systems;
+    if (countAi) countAi.textContent = counts.ai;
+    if (countTemplates) countTemplates.textContent = counts.templates;
     if (countServices) countServices.textContent = counts.services;
   }
 
