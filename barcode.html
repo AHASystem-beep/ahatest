@@ -15,6 +15,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js"></script>
+<script>
+  // في حال فشل تحميل JsBarcode من المصدر الأول (مثلاً بسبب حجب من aha-protect.js
+  // أو مشكلة شبكة)، نحاول تحميلها من مصدر بديل تلقائياً.
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof JsBarcode === 'undefined') {
+      var fallback = document.createElement('script');
+      fallback.src = 'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js';
+      fallback.onload = function () {
+        if (typeof renderSingle === 'function') renderSingle();
+      };
+      document.head.appendChild(fallback);
+    }
+  });
+</script>
 
 <style>
   :root{
@@ -239,6 +253,12 @@ function renderSingle(){
   errBox.style.display = 'none';
   errBox.textContent = '';
 
+  if (typeof JsBarcode === 'undefined'){
+    errBox.textContent = '⚠️ لم يتم تحميل مكتبة JsBarcode. تحقق من أن aha-protect.js لا يحجب النطاق cdnjs.cloudflare.com، أو استخدم نسخة محلية من الملف.';
+    errBox.style.display = 'block';
+    return;
+  }
+
   if (!code){
     const canvas = document.getElementById('singleCanvas');
     const ctx = canvas.getContext('2d');
@@ -318,6 +338,12 @@ function renderBulk(){
 
   sheet.style.gridTemplateColumns = 'repeat(' + columns + ', 1fr)';
   sheet.innerHTML = '';
+
+  if (typeof JsBarcode === 'undefined'){
+    errBox.textContent = '⚠️ لم يتم تحميل مكتبة JsBarcode. تحقق من أن aha-protect.js لا يحجب النطاق cdnjs.cloudflare.com، أو استخدم نسخة محلية من الملف.';
+    errBox.style.display = 'block';
+    return;
+  }
 
   if (items.length === 0){
     errBox.textContent = '⚠️ أدخل قائمة منتجات أولاً (سطر واحد لكل منتج).';
