@@ -198,6 +198,7 @@
     <div class="btn-row">
       <button type="button" class="btn btn-primary" onclick="analyzeVat()">🔍 تحليل الضريبة</button>
       <button type="button" class="btn btn-ghost" onclick="explainVat()">📖 كيف حُسبت؟ (مع القيود المحاسبية)</button>
+      <button type="button" class="btn btn-ghost" onclick="clearVatForm()">🗑️ مسح الكل</button>
     </div>
   </div>
 
@@ -244,6 +245,19 @@ function getInputs(){
   const netDue = vatOut - vatIn;
 
   return { sales, salesRate, purchases, purchasesRate, vatOut, vatIn, netDue };
+}
+
+function clearVatForm(){
+  document.getElementById('in-sales').value = '';
+  document.getElementById('in-salesRate').value = '15';
+  document.getElementById('in-purchases').value = '';
+  document.getElementById('in-purchasesRate').value = '15';
+
+  document.getElementById('resultCard').classList.add('hidden');
+  document.getElementById('explainBox').classList.add('hidden');
+  document.getElementById('explainBox').innerHTML = '';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function analyzeVat(){

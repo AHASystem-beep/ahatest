@@ -385,11 +385,16 @@
     </div>
 
     <h2 class="panel-title">منشئ السيرة الذاتية الاحترافي</h2>
+    <span onclick="clearAllCvData()" style="display:inline-block; margin-bottom:16px; font-size:0.78rem; font-weight:700; color:#b4453f; cursor:pointer; text-decoration:underline;">🗑️ مسح كل البيانات والبدء من جديد</span>
     
     <div class="section-card">
       <h3 class="section-card-title">المعلومات الشخصية</h3>
       <div class="form-grid">
-        <div class="form-group"><label>الصورة الشخصية</label><input type="file" accept="image/*" onchange="loadAvatar(this)"></div>
+        <div class="form-group">
+          <label>الصورة الشخصية</label>
+          <input type="file" accept="image/*" onchange="loadAvatar(this)">
+          <span onclick="clearAvatar()" style="display:inline-block; margin-top:6px; font-size:0.75rem; color:#8a8a8a; cursor:pointer; text-decoration:underline;">إزالة الصورة</span>
+        </div>
         <div class="form-group"><label>الاسم الكامل</label><input type="text" id="in-name" value="" oninput="syncData()"></div>
         <div class="form-group"><label>المسمى الوظيفي</label><input type="text" id="in-title" value="" oninput="syncData()"></div>
         <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="in-email" value="" oninput="syncData()"></div>
@@ -401,7 +406,7 @@
 
     <div class="section-card">
       <h3 class="section-card-title">الملخص المهني</h3>
-      <div class="form-group"><textarea id="in-summary" rows="3" oninput="syncData()">محاسب مالي ذو خبرة طويلة ومميزة في إعداد القوائم المالية الشاملة، إدارة الحسابات، والتحليل المالي الدقيق وتطوير النظم المحاسبية للشركات بما يضمن الكفاءة والنمو.</textarea></div>
+      <div class="form-group"><textarea id="in-summary" rows="3" oninput="syncData()"></textarea></div>
     </div>
 
     <div class="section-card">
@@ -480,12 +485,12 @@ let storeAr = {
   phone: "",
   age: "",
   skills: "",
-  summary: "محاسب مالي ذو خبرة طويلة ومميزة في إعداد القوائم المالية الشاملة، إدارة الحسابات، والتحليل المالي الدقيق وتطوير النظم المحاسبية للشركات بما يضمن الكفاءة والنمو.",
+  summary: "",
   experiences: [
     { role: "", company: "", period: "", desc: "" }
   ],
   education: [
-    { degree: "", institute: "جامعة دمشق", period: "" }
+    { degree: "", institute: "", period: "" }
   ]
 };
 
@@ -516,6 +521,33 @@ function loadAvatar(input) {
     reader.onload = e => document.getElementById('cv-avatar').src = e.target.result;
     reader.readAsDataURL(input.files[0]);
   }
+}
+
+const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' opacity='0.3'><path d='M12 12c2.21 0 4-1.79 4-4s1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+
+function clearAvatar() {
+  document.getElementById('cv-avatar').src = DEFAULT_AVATAR;
+}
+
+function clearAllCvData() {
+  if (!confirm('سيتم مسح كل البيانات المُدخلة (الاسم، البيانات، الخبرات، التعليم، الصورة) بكلا اللغتين العربية والإنجليزية. هل أنت متأكد؟')) return;
+
+  storeAr = { name:"", title:"", email:"", phone:"", age:"", skills:"", summary:"",
+    experiences: [{ role:"", company:"", period:"", desc:"" }],
+    education: [{ degree:"", institute:"", period:"" }] };
+  storeEn = JSON.parse(JSON.stringify(storeAr));
+
+  document.getElementById('in-name').value = "";
+  document.getElementById('in-title').value = "";
+  document.getElementById('in-email').value = "";
+  document.getElementById('in-phone').value = "";
+  document.getElementById('in-age').value = "";
+  document.getElementById('in-skills').value = "";
+  document.getElementById('in-summary').value = "";
+
+  clearAvatar();
+  renderEditorLists();
+  renderCV();
 }
 
 function pushItem(type) {

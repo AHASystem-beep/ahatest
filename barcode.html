@@ -15,20 +15,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js"></script>
-<script>
-  // في حال فشل تحميل JsBarcode من المصدر الأول (مثلاً بسبب حجب من aha-protect.js
-  // أو مشكلة شبكة)، نحاول تحميلها من مصدر بديل تلقائياً.
-  window.addEventListener('DOMContentLoaded', function () {
-    if (typeof JsBarcode === 'undefined') {
-      var fallback = document.createElement('script');
-      fallback.src = 'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js';
-      fallback.onload = function () {
-        if (typeof renderSingle === 'function') renderSingle();
-      };
-      document.head.appendChild(fallback);
-    }
-  });
-</script>
 
 <style>
   :root{
@@ -183,6 +169,7 @@
         <div class="btn-row">
           <button type="button" class="btn btn-primary" onclick="downloadSingle()">⬇️ تحميل كصورة PNG</button>
           <button type="button" class="btn btn-ghost" onclick="printSingle()">🖨️ طباعة</button>
+          <button type="button" class="btn btn-ghost" onclick="clearSingle()">🗑️ مسح</button>
         </div>
       </div>
     </div>
@@ -209,6 +196,7 @@
         </div>
         <button type="button" class="btn btn-primary" onclick="renderBulk()">🔄 توليد الملصقات</button>
         <button type="button" class="btn btn-ghost" onclick="printBulk()">🖨️ طباعة الكل</button>
+        <button type="button" class="btn btn-ghost" onclick="clearBulk()">🗑️ مسح القائمة</button>
       </div>
       <div class="form-row">
         <label>قائمة المنتجات — سطر واحد لكل منتج، بالصيغة: الكود,اسم المنتج</label>
@@ -253,12 +241,6 @@ function renderSingle(){
   errBox.style.display = 'none';
   errBox.textContent = '';
 
-  if (typeof JsBarcode === 'undefined'){
-    errBox.textContent = '⚠️ لم يتم تحميل مكتبة JsBarcode. تحقق من أن aha-protect.js لا يحجب النطاق cdnjs.cloudflare.com، أو استخدم نسخة محلية من الملف.';
-    errBox.style.display = 'block';
-    return;
-  }
-
   if (!code){
     const canvas = document.getElementById('singleCanvas');
     const ctx = canvas.getContext('2d');
@@ -279,6 +261,14 @@ function renderSingle(){
     errBox.textContent = '⚠️ الكود غير صالح لهذا النوع من الباركود: ' + e.message;
     errBox.style.display = 'block';
   }
+}
+
+function clearSingle(){
+  document.getElementById('single-code').value = '';
+  document.getElementById('single-name').value = '';
+  document.getElementById('single-format').value = 'CODE128';
+  document.getElementById('single-error').style.display = 'none';
+  renderSingle();
 }
 
 function downloadSingle(){
@@ -327,6 +317,12 @@ function parseBulkList(){
     .filter(item => item.code.length > 0);
 }
 
+function clearBulk(){
+  document.getElementById('bulk-list').value = '';
+  document.getElementById('bulk-error').style.display = 'none';
+  document.getElementById('labelSheet').innerHTML = '';
+}
+
 function renderBulk(){
   const format = document.getElementById('bulk-format').value;
   const columns = parseInt(document.getElementById('bulk-columns').value) || 3;
@@ -338,12 +334,6 @@ function renderBulk(){
 
   sheet.style.gridTemplateColumns = 'repeat(' + columns + ', 1fr)';
   sheet.innerHTML = '';
-
-  if (typeof JsBarcode === 'undefined'){
-    errBox.textContent = '⚠️ لم يتم تحميل مكتبة JsBarcode. تحقق من أن aha-protect.js لا يحجب النطاق cdnjs.cloudflare.com، أو استخدم نسخة محلية من الملف.';
-    errBox.style.display = 'block';
-    return;
-  }
 
   if (items.length === 0){
     errBox.textContent = '⚠️ أدخل قائمة منتجات أولاً (سطر واحد لكل منتج).';

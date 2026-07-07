@@ -254,6 +254,7 @@
   <div class="calc-bar">
     <p style="font-size:0.85rem; color:var(--ink-soft);">لا تُحفظ أي بيانات — الحساب يتم في متصفحك فقط.</p>
     <button class="btn-calc" onclick="calculateZakat(true)">🧮 احسب الزكاة</button>
+    <button class="btn-calc" style="background:#6b6570;" onclick="clearZakatForm()">🗑️ مسح كل الحقول</button>
   </div>
 
   <div class="results" id="zakatResults">
@@ -282,6 +283,33 @@
 function val(id){ return parseFloat(document.getElementById(id).value) || 0; }
 function ival(id){ return parseInt(document.getElementById(id).value) || 0; }
 function fmt(n){ return n.toLocaleString('en-US', {maximumFractionDigits: 2}); }
+
+function clearZakatForm(){
+  // حقول القيم الفعلية تُصفَّر بالكامل
+  const zeroFields = [
+    'zGold24','zGold22','zGold21','zGold18','zSilver',
+    'zCash','zInvestments','zInventory','zReceivables','zPayables',
+    'zCropsRain','zCropsIrrigation','zCropsMixed',
+    'zCamels','zCattle','zSheep'
+  ];
+  zeroFields.forEach(id => { document.getElementById(id).value = '0'; });
+
+  // أسعار الذهب والفضة تُعاد لقيمها المرجعية الافتراضية (ليست بيانات شخصية)
+  document.getElementById('zGoldPrice').value = '65.50';
+  document.getElementById('zSilverPrice').value = '0.76';
+
+  document.getElementById('zCombineOpinion').checked = false;
+
+  document.getElementById('zakatResults').style.display = 'none';
+  document.getElementById('nisabStatus').textContent = '';
+  document.getElementById('resultDetails').innerHTML = '';
+  document.getElementById('combineBox').innerHTML = '';
+  document.getElementById('totalWealth').textContent = '0';
+  document.getElementById('nisabValue').textContent = '0';
+  document.getElementById('totalZakat').textContent = '0';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 function calculateZakat(shouldScroll){
   const goldPrice = val('zGoldPrice') || 65.50;
