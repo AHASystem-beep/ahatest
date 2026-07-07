@@ -162,6 +162,7 @@
     <div class="btn-row">
       <button type="button" class="btn btn-primary" onclick="analyze()">📊 حلّل الآن</button>
       <button type="button" class="btn btn-ghost" onclick="explainAnalysis()">📖 شرح طريقة التحليل والتقييم</button>
+      <button type="button" class="btn btn-ghost" onclick="clearAll()">🗑️ مسح الكل</button>
     </div>
     <div class="error-msg" id="errorMsg"></div>
   </div>
@@ -344,6 +345,27 @@ function analyze(){
   document.getElementById('insightCard').classList.remove('hidden');
   const rc = document.getElementById('resultsCard');
   if (rc.scrollIntoView) rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function clearAll(){
+  const ids = [
+    'in-sales', 'in-cogs', 'in-netProfit', 'in-opProfit', 'in-totalAssets', 'in-equity',
+    'in-currentAssets', 'in-currentLiab', 'in-inventory', 'in-cash'
+  ];
+  ids.forEach(id => { document.getElementById(id).value = ''; });
+
+  document.getElementById('errorMsg').style.display = 'none';
+  document.getElementById('resultsCard').classList.add('hidden');
+  document.getElementById('liquidityCard').classList.add('hidden');
+  document.getElementById('insightCard').classList.add('hidden');
+  document.getElementById('explainCard').classList.add('hidden');
+  document.getElementById('profitabilityGrid').innerHTML = '';
+  document.getElementById('liquidityGrid').innerHTML = '';
+  document.getElementById('insightBox').innerHTML = '';
+  document.getElementById('explainBox').textContent = '';
+  lastResults = null;
+
+  document.getElementById('in-sales').focus();
 }
 
 function explainAnalysis(){
