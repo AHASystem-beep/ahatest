@@ -98,6 +98,12 @@
   .insight-box ul{ padding-inline-start:20px; margin-top:8px; }
   .insight-box li{ margin-bottom:6px; }
 
+  .explain-box{
+    background: var(--gold-soft); border-radius:10px; padding:18px; font-size:0.82rem;
+    line-height:1.95; color:var(--ink); white-space:pre-wrap; word-break:break-word;
+    font-family:'IBM Plex Mono', monospace; max-height:420px; overflow-y:auto;
+  }
+
   .disclaimer{ font-size:0.72rem; color:var(--ink-soft); margin-top:16px; text-align:center; line-height:1.7; }
 
   footer{ text-align:center; padding:30px 24px; color:var(--ink-soft); font-size:0.85rem; border-top:1px solid var(--grid-line); }
@@ -155,8 +161,14 @@
     </div>
     <div class="btn-row">
       <button type="button" class="btn btn-primary" onclick="analyze()">📊 حلّل الآن</button>
+      <button type="button" class="btn btn-ghost" onclick="explainAnalysis()">📖 شرح طريقة التحليل والتقييم</button>
     </div>
     <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <div class="card hidden" id="explainCard">
+    <h2>📖 كيف يعمل هذا التحليل بالضبط</h2>
+    <div class="explain-box" id="explainBox"></div>
   </div>
 
   <div class="card hidden" id="resultsCard">
@@ -182,6 +194,8 @@
 </footer>
 
 <script>
+let lastResults = null;
+
 function num(id){
   const v = parseFloat(document.getElementById(id).value);
   return isNaN(v) ? null : v;
@@ -289,6 +303,13 @@ function analyze(){
     liqGrid.innerHTML += ratioBox('نسبة النقدية', fmtRatio(cashRatio), c.tag, c.label, 'النقد وما يعادله ÷ الخصوم المتداولة');
   }
 
+  lastResults = {
+    sales, cogs, netProfit, opProfit, totalAssets, equity,
+    currentAssets, currentLiab, inventory, cash,
+    grossMargin, netMargin, opMargin, roa, roe,
+    currentRatio, quickRatio, cashRatio
+  };
+
   // ===== التفسير المركّب (قواعد ثابتة) =====
   const notes = [];
   if (grossMargin < 20){
@@ -323,6 +344,79 @@ function analyze(){
   document.getElementById('insightCard').classList.remove('hidden');
   const rc = document.getElementById('resultsCard');
   if (rc.scrollIntoView) rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function explainAnalysis(){
+  analyze(); // نضمن أن الأرقام محدّثة قبل الشرح
+  if (!lastResults) return; // فشل التحقق من الحقول، الخطأ ظاهر أصلاً بالأعلى
+
+  const r = lastResults;
+  const opLine = r.opProfit !== null
+    ? `هامش الربح التشغيلي = الربح التشغيلي ÷ المبيعات = ${fmtRatio(r.opProfit)} ÷ ${fmtRatio(r.sales)} = ${fmtPct(r.opMargin)}`
+    : `هامش الربح التشغيلي = لم يُدخَل (حقل اختياري) — تم تجاوزه`;
+
+  const text =
+`── أولاً: كيف تُحسب كل نسبة (بأرقامك الفعلية) ──────────
+
+📁 نسب الربحية
+
+هامش الربح الإجمالي = (المبيعات − تكلفة البضاعة) ÷ المبيعات
+   = (${fmtRatio(r.sales)} − ${fmtRatio(r.cogs)}) ÷ ${fmtRatio(r.sales)} = ${fmtPct(r.grossMargin)}
+
+${opLine}
+
+هامش صافي الربح = صافي الربح ÷ المبيعات
+   = ${fmtRatio(r.netProfit)} ÷ ${fmtRatio(r.sales)} = ${fmtPct(r.netMargin)}
+
+العائد على الأصول (ROA) = صافي الربح ÷ إجمالي الأصول
+   = ${fmtRatio(r.netProfit)} ÷ ${fmtRatio(r.totalAssets)} = ${r.roa !== null ? fmtPct(r.roa) : '—'}
+
+العائد على حقوق الملكية (ROE) = صافي الربح ÷ حقوق الملكية
+   = ${fmtRatio(r.netProfit)} ÷ ${fmtRatio(r.equity)} = ${r.roe !== null ? fmtPct(r.roe) : '—'}
+
+📁 نسب السيولة
+
+النسبة الجارية = الأصول المتداولة ÷ الخصوم المتداولة
+   = ${fmtRatio(r.currentAssets)} ÷ ${fmtRatio(r.currentLiab)} = ${r.currentRatio !== null ? fmtRatio(r.currentRatio) : '—'}
+
+نسبة السيولة السريعة = (الأصول المتداولة − المخزون) ÷ الخصوم المتداولة
+   = (${fmtRatio(r.currentAssets)} − ${fmtRatio(r.inventory)}) ÷ ${fmtRatio(r.currentLiab)} = ${r.quickRatio !== null ? fmtRatio(r.quickRatio) : '—'}
+
+نسبة النقدية = النقد وما يعادله ÷ الخصوم المتداولة
+   = ${fmtRatio(r.cash)} ÷ ${fmtRatio(r.currentLiab)} = ${r.cashRatio !== null ? fmtRatio(r.cashRatio) : '—'}
+
+── ثانياً: آلية التقييم (جيدة / مقبولة / تحتاج انتباه) ──
+
+كل نسبة تُقارَن بحدّين مرجعيّين ثابتين (وليس بتقدير عشوائي):
+  • أقل من الحد الأدنى  → "تحتاج انتباه ❌"
+  • بين الحدّين         → "مقبولة ⚠️"
+  • أعلى من الحد الأعلى → "جيدة ✅"
+
+الحدود المستخدمة في هذه الأداة تحديداً:
+  هامش الربح الإجمالي:      أقل من 20% ❌  |  20%–40% ⚠️  |  أكثر من 40% ✅
+  هامش الربح التشغيلي:      أقل من 10% ❌  |  10%–20% ⚠️  |  أكثر من 20% ✅
+  هامش صافي الربح:          أقل من 5%  ❌  |  5%–10%  ⚠️  |  أكثر من 10% ✅
+  العائد على الأصول (ROA):  أقل من 5%  ❌  |  5%–10%  ⚠️  |  أكثر من 10% ✅
+  العائد على حقوق الملكية:  أقل من 10% ❌  |  10%–20% ⚠️  |  أكثر من 20% ✅
+  النسبة الجارية:           أقل من 1  ❌  |  1–3      ✅  |  أكثر من 3  ⚠️ (أموال معطّلة)
+  السيولة السريعة:          أقل من 0.5 ❌ |  0.5–1    ⚠️  |  أكثر من 1  ✅
+  نسبة النقدية:             أقل من 0.2 ❌ |  0.2–0.5  ⚠️  |  أكثر من 0.5 ✅
+
+── ثالثاً: من أين تفسير "الملاحظة المركّبة"؟ ────────
+
+القسم الأخير (التفسير المركّب) لا يكتفي بعرض كل نسبة منفردة، بل يبحث عن
+تركيبات معروفة بين أكثر من نسبة معاً — مثال: ربحية جيدة + سيولة ضعيفة معاً
+تعني عادة أن المشكلة في "توقيت التحصيل" وليست في "نموذج الربح" نفسه، وهذا
+استنتاج لا يظهر من قراءة أي نسبة بمفردها.
+
+⚠️ هذه الحدود مرجعيات عامة شائعة الاستخدام في الأدبيات المالية، وتختلف
+فعلياً حسب طبيعة النشاط وحجمه (شركة تجزئة تختلف عن مصنع مثلاً) — استخدمها
+كدليل أولي سريع، لا كحكم نهائي قاطع.`;
+
+  document.getElementById('explainBox').textContent = text;
+  const ec = document.getElementById('explainCard');
+  ec.classList.remove('hidden');
+  if (ec.scrollIntoView) ec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 </script>
 </body>
