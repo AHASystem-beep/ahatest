@@ -97,7 +97,7 @@
     padding: 20px; box-shadow: var(--shadow-md);
   }
   .video-frame{
-    position: relative; width:100%; padding-top:56.25%; border-radius:8px; overflow:hidden;
+    position: relative; width:100%; max-width:320px; margin:0 auto; padding-top:177.77%; border-radius:8px; overflow:hidden;
     background: linear-gradient(135deg, var(--odoo-purple), var(--odoo-purple-dark));
   }
   .video-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
@@ -209,9 +209,7 @@
     </div>
     <div class="hero-visual">
       <div class="video-frame">
-        <!-- ضع هنا رابط تضمين يوتيوب لفيديو تسجيل الشاشة، مثال:
-             src="https://www.youtube.com/embed/VIDEO_ID" -->
-        <iframe src="https://youtube.com/shorts/n37Yfu8rGl0" title="عرض نظام CashOnHand" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/n37Yfu8rGl0" title="عرض نظام CashOnHand" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
       <p class="video-caption">🎥 فيديو مسجّل شاشة يعرض النظام أثناء الاستخدام الفعلي</p>
     </div>
