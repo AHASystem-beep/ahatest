@@ -74,7 +74,7 @@ const APPS = [
   {
     category: 'business', name: 'CashOnHand — يومية الصندوق الذكية', icon: '💵', tile: 'tile-c2',
     desc: 'دفتر يومية صندوق ذكي ومؤتمت بالكامل عبر بوت تيليغرام وجوجل شيت، بدون إدخال يدوي معقّد.',
-    status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
+    status: 'live', link: 'cashonhand.html', linkText: 'تفاصيل ومراسلة ←'
   },
 
   // ===== 3) أنظمة التشغيل =====
