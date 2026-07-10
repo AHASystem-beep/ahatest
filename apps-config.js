@@ -62,11 +62,6 @@ const APPS = [
 
   // ===== 2) أدوات الأعمال =====
   {
-    category: 'business', name: 'CredNote — مفكرة الائتمان', icon: '💳', tile: 'tile-c5',
-    desc: 'بوت وتطبيق ويب لإدارة الديون والائتمان للتجار، مع حاسبة زكاة مدمجة.',
-    status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
-  },
-  {
     category: 'business', name: 'نظام سلفة', icon: '💰', tile: 'tile-c6',
     desc: 'تطبيق Telegram Mini App لإدارة سلف المشاريع لعدة عملاء (Multi-tenant) بمزامنة كاملة مع جوجل شيت.',
     status: 'live', link: 'selfa.html', linkText: 'تفاصيل ومراسلة ←'
@@ -78,6 +73,11 @@ const APPS = [
   },
 
   // ===== 3) أنظمة التشغيل =====
+  {
+    category: 'systems', name: 'AHA-system — النظام المحاسبي المتكامل', icon: '🧮', tile: 'tile-c5',
+    desc: 'نظام محاسبي متكامل على جوجل شيت: سجّل فقط الفاتورة والسند، والقيود والقوائم المالية والمخزون تتحدث تلقائياً بالكامل.',
+    status: 'live', link: 'aha-system.html', linkText: 'تفاصيل ومراسلة ←'
+  },
   {
     category: 'systems', name: 'نظام الكاشير بالباركود', icon: '🧾', tile: 'tile-c3',
     desc: 'مسح باركود فوري بكاميرا الموبايل عبر بوت تيليغرام وميني آب، يكتب مباشرة على شيت الفاتورة — بدعم عدة عملاء (Multi-tenant). نظام مدفوع — تواصل للسعر.',
