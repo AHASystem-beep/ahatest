@@ -85,8 +85,8 @@ const APPS = [
   },
   {
     category: 'systems', name: 'إدارة ورشات PVC', icon: '🚪', tile: 'tile-c4',
-    desc: 'نظام جوجل شيت لإدارة ورشات تجميع وتشكيل أبواب وواجهات PVC، من متابعة الإنتاج إلى الجاهزية للتسليم.',
-    status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
+    desc: 'نظام جوجل شيت متكامل لورشات PVC: حركة عامة، صندوق، مبيعات ومشتريات، عملاء وموردين، تقرير أرباح، وترحيل مواد تلقائي.',
+    status: 'live', link: 'pvc-workshop.html', linkText: 'تفاصيل ومراسلة ←'
   },
   {
     category: 'systems', name: 'RIS — نظام مراكز الأشعة', icon: '🩻', tile: 'tile-c1',
