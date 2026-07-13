@@ -91,7 +91,7 @@ const APPS = [
   {
     category: 'systems', name: 'RIS — نظام مراكز الأشعة', icon: '🩻', tile: 'tile-c1',
     desc: 'نظام إدارة كامل لمراكز الأشعة، مربوط ببوت تيليغرام بذكاء اصطناعي يجاوب مباشرة من بيانات النظام.',
-    status: 'live', link: null, linkText: 'تفاصيل ومراسلة ←'
+    status: 'live', link: 'ris.html', linkText: 'تفاصيل ومراسلة ←'
   },
 
   // ===== 4) تحليلات وتقارير ذكية =====
