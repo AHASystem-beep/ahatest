@@ -768,6 +768,7 @@
     <a href="#about"><span class="cell-ref">C1</span>عن AHA</a>
     <a href="#youtube"><span class="cell-ref">D1</span>يوتيوب</a>
     <a href="#contact"><span class="cell-ref">E1</span>آراء ومراسلة</a>
+    <a href="#articles"><span class="cell-ref">F1</span>المقالات</a>
   </nav>
 </header>
 
@@ -885,6 +886,17 @@
       <h3>واتساب</h3>
       <a href="https://wa.me/963980285553" class="btn btn-ghost">تواصل عبر واتساب</a>
     </div>
+  </div>
+</section>
+
+<section id="articles">
+  <div class="section-head">
+    <span class="cell-ref">F1 · المقالات</span>
+    <h2>مقالات AHA</h2>
+    <p>سلسلة مقالات تتناول المحاسبة التطبيقية للمعاملات المالية الإسلامية، وسائر الموضوعات المحاسبية والتقنية.</p>
+  </div>
+  <div id="articlesList">
+    <p style="text-align:center; color:var(--ink-soft); padding:40px 0;">لا توجد مقالات منشورة بعد — قريباً.</p>
   </div>
 </section>
 
@@ -1007,14 +1019,23 @@
     revealTargets.forEach(function (el) { el.classList.add('in-view'); });
   }
   // 4) شاشة الدخول المحاكية بصريًا لتجربة أودوو (بدون تحقق حقيقي)
+  //    تظهر مرة واحدة فقط لكل جلسة متصفح (sessionStorage)، وليس عند كل تنقل بين الصفحات
   var splash = document.getElementById('odooSplash');
-  var splashSlot = document.getElementById('splashLogoSlot');
-  var headerLogo = document.querySelector('.logo img');
-  if (splashSlot && headerLogo) {
-    splashSlot.appendChild(headerLogo.cloneNode(true));
+  var alreadyEntered = false;
+  try { alreadyEntered = sessionStorage.getItem('ahaEntered') === '1'; } catch (e) {}
+  if (splash && alreadyEntered) {
+    splash.parentNode.removeChild(splash);
+    splash = null;
+  } else {
+    var splashSlot = document.getElementById('splashLogoSlot');
+    var headerLogo = document.querySelector('.logo img');
+    if (splashSlot && headerLogo) {
+      splashSlot.appendChild(headerLogo.cloneNode(true));
+    }
   }
   function enterSite() {
     document.documentElement.style.overflow = '';
+    try { sessionStorage.setItem('ahaEntered', '1'); } catch (e) {}
     if (splash) {
       splash.classList.add('hidden');
       setTimeout(function () { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 550);
